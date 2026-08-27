@@ -29,15 +29,15 @@
 }
 
 /* ---------- quick tiles ---------- */
-.psp-tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
+.psp-tiles{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin:12px 0; }
 .psp-tile{
-  min-height:88px; padding:10px 4px; border-radius:var(--radius); cursor:pointer;
+  min-width:0; min-height:88px; padding:10px 3px; border-radius:var(--radius); cursor:pointer;
   background:var(--surface); border:1px solid var(--border); color:var(--text);
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
 }
 .psp-tile-icon{ font-size:19px; }
-.psp-tile-label{ font-size:10px; font-weight:800; letter-spacing:.4px; }
-.psp-tile-sub{ font-size:9px; color:var(--text-2); }
+.psp-tile-label{ font-size:10px; font-weight:800; letter-spacing:0; overflow-wrap:anywhere; }
+.psp-tile-sub{ font-size:9px; color:var(--text-2); overflow-wrap:anywhere; text-align:center; }
 
 /* ---------- promo ---------- */
 .psp-promo{
@@ -65,7 +65,7 @@
   scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
 }
 .psp-railcard{ flex:0 0 46%; min-width:0; scroll-snap-align:start; }
-.psp-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.psp-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 .psp-card,.psp-railcard{
   display:flex; flex-direction:column; align-items:stretch;
   position:relative; text-align:left; cursor:pointer; padding:12px 10px 14px;
@@ -113,7 +113,7 @@
 .psp-group{ margin-bottom:16px; }
 .psp-group-label{ font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); margin-bottom:8px; }
 .psp-group-label span{ text-transform:none; letter-spacing:0; }
-.psp-opts{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.psp-opts{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
 .psp-opt{
   min-height:var(--tap); padding:8px; border-radius:9px; cursor:pointer; font-size:13px; font-weight:600;
   background:var(--bg-2); border:1.5px solid var(--border); color:var(--text);
@@ -215,13 +215,13 @@
 
 /* ---------- wider screens ---------- */
 @media (min-width:480px){
-  .psp-grid{ grid-template-columns:repeat(3,1fr); }
+  .psp-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
   .psp-railcard{ flex-basis:30%; }
   .psp-hero-h{ font-size:40px; }
 }
 @media (min-width:768px){
-  .psp-grid{ grid-template-columns:repeat(4,1fr); }
+  .psp-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); }
   .psp-railcard{ flex-basis:22%; }
   .psp-basketbar{ left:auto; right:24px; width:340px; bottom:24px; }
-  .psp-opts{ grid-template-columns:repeat(4,1fr); }
+  .psp-opts{ grid-template-columns:repeat(4,minmax(0,1fr)); }
 }

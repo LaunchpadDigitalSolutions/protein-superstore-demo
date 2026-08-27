@@ -40,6 +40,13 @@ check('logo has a max-width guard', /\.psp-logo\{[^}]*max-width:150px/.test(css.
 const taps = (css.match(/min-height:\s*var\(--tap\)|min-height:\s*(4[4-9]|[5-9]\d)px/g)||[]).length;
 check('44px+ tap targets used throughout', taps >= 8, taps+' found');
 
+/* A `1fr` column can refuse to shrink below its content, which pushes the
+   grid wider than the screen and makes a phone open the page zoomed out. */
+const bareFr = (css.match(/grid-template-columns:\s*repeat\(\d+,\s*1fr\)/g)||[]);
+check('no grid column that can refuse to shrink', bareFr.length === 0, bareFr.join(' '));
+check('html holds the overflow line, not just body', /html\{[^}]*overflow-x:hidden/.test(css.replace(/\s+/g,'')));
+check('tiles can shrink', /\.psp-tile\{[^}]*min-width:0/.test(css.replace(/\s+/g,'')));
+
 console.log('\nCache busting\n');
 const linked = html.match(/\.(?:css|js)\?v=[\d.]+/g)||[];
 check('every stylesheet and script is version-stamped', linked.length >= 12, linked.length+' found');
@@ -49,6 +56,10 @@ check('nothing links to an unversioned asset', unversioned.length === 0, unversi
 const sw = readFileSync('sw.js','utf8');
 check('code is network-first in the service worker', /isCode \? networkFirst/.test(sw));
 check('offline fallback never serves JSON as a stylesheet', /isData/.test(sw));
+
+const app = readFileSync('js/app.js','utf8');
+check('updates apply themselves rather than waiting on a tap',
+  /ctx\.pwa\.applyUpdate\(\);/.test(app) && /!ctx\.cart\.isEmpty/.test(app));
 
 console.log(`\n${pass} passed, ${fail} failed\n`);
 process.exit(fail?1:0);

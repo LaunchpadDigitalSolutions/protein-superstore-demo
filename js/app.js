@@ -79,9 +79,22 @@ async function boot() {
 
   ctx.pwa = new PWA({ swPath: './sw.js', scope: './' });
   ctx.pwa.register();
-  ctx.pwa.onUpdateAvailable(() => toast('New version available', {
-    duration: 8000, action: { label: 'Reload', onClick: () => ctx.pwa.applyUpdate() }
-  }));
+  /* Apply updates without asking.
+
+     The prompt version left a phone sitting on an old build until somebody
+     noticed the banner and tapped it — which is exactly how a stale demo gets
+     shown to a client. The only moment worth asking is mid-order, when a
+     reload would lose the basket. */
+  ctx.pwa.onUpdateAvailable(() => {
+    if (ctx.cart && !ctx.cart.isEmpty) {
+      toast('New version ready', {
+        duration: 10000,
+        action: { label: 'Update', onClick: () => ctx.pwa.applyUpdate() }
+      });
+      return;
+    }
+    ctx.pwa.applyUpdate();
+  });
 
   new BugReport({
     clientRef: CONFIG.clientRef,
@@ -129,7 +142,7 @@ function brandTheHeader() {
   if (!top || top.querySelector('.psp-logo')) return;
   const el = document.createElement('div');
   el.className = 'psp-topbrand';
-  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.1.1" alt="Protein Superstore">';
+  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.1.2" alt="Protein Superstore">';
   top.appendChild(el);
 }
 
