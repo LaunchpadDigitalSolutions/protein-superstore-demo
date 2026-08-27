@@ -23,6 +23,28 @@ export function isOutstanding(o) {
     .some(f => o[f] === 'active');
 }
 
+/* Where an order has got to, from the staff's point of view.
+
+   'todo'      something still to make or pick
+   'waiting'   everything done, customer has not been in yet
+
+   A ready order stays on the list rather than vanishing, because with
+   reserve-and-pay the money has not been taken yet — the job is not finished
+   when the slush is made, it is finished when they collect and pay. */
+export function stage(o) {
+  if (o.status !== 'active') return 'done';
+  return isOutstanding(o) ? 'todo' : 'waiting';
+}
+
+export function isUnpaid(o) {
+  return o.payment === 'counter';
+}
+
+/* What staff must collect at the counter. Zero for anything already paid. */
+export function amountDue(o) {
+  return isUnpaid(o) ? Number(o.total) : 0;
+}
+
 /* What the person actually has to do, split by where it comes from.
    `make` is the slush bar. `pick` is off the shelf. */
 export function work(o) {
@@ -42,6 +64,15 @@ export function minutesWaiting(o, now = Date.now()) {
 export function sortForStaff(rows) {
   return rows.slice().sort((a, b) =>
     new Date(a.created_at) - new Date(b.created_at));
+}
+
+/* Everything still on the staff's plate: to make, or made and waiting to be
+   collected. Sorted so the work comes first, then the waiting shelf. */
+export function forStaff(rows) {
+  const live = rows.filter(o => o.status === 'active');
+  const todo = sortForStaff(live.filter(o => stage(o) === 'todo'));
+  const waiting = sortForStaff(live.filter(o => stage(o) === 'waiting'));
+  return { todo, waiting };
 }
 
 /* Which orders are new since we last looked, so we only notify once each. */
@@ -65,7 +96,19 @@ export function readyPatch(o) {
   return patch;
 }
 
-/* Collected closes it off. */
+/* Collected closes it off — and for a reserve-and-pay order, this is the
+   moment the money is actually taken. */
 export function collectedPatch() {
   return { status: 'complete', completed_at: new Date().toISOString() };
+}
+
+/* Points are earned on payment, not on ordering.
+
+   A prepaid order has already paid, so the customer app awards at checkout.
+   A reserved order has not, and might never be collected — awarding then
+   would hand out points for an order that never happened. Staff marking it
+   collected is the trigger. */
+export function pointsOnCollection(o, pointsPerPound) {
+  if (!isUnpaid(o) || !o.customer_email) return 0;
+  return Math.floor(Number(o.total) * pointsPerPound);
 }

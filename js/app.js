@@ -138,7 +138,7 @@ function brandTheHeader() {
   if (!top || top.querySelector('.psp-logo')) return;
   const el = document.createElement('div');
   el.className = 'psp-topbrand';
-  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.2.0" alt="Protein Superstore">';
+  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.2.1" alt="Protein Superstore">';
   top.appendChild(el);
 }
 

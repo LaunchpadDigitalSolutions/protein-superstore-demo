@@ -31,7 +31,7 @@ export async function ordersHtml() {
     rows = await ctx.cart.db('GET',
       `/rest/v1/ls_orders?venue=eq.${encodeURIComponent(CONFIG.venue)}` +
       `&customer_email=eq.${encodeURIComponent(user.email)}` +
-      `&select=id,items,total,status,food_status,drink_status,table_num,created_at` +
+      `&select=id,items,total,status,food_status,drink_status,table_num,payment,created_at` +
       `&order=created_at.desc&limit=20`) || [];
   } catch (e) {
     return `<div class="psp-empty">Could not load your orders (PSP-201). Pull down to try again.</div>`;
@@ -60,6 +60,7 @@ export async function ordersHtml() {
 function orderCard(o) {
   const s = statusOf(o);
   const items = (o.items || []).map(i => `${i.q}× ${esc(i.n)}`).join('<br>');
+  const unpaid = o.payment === 'counter' && o.status === 'active';
   return `
     <article class="psp-order ${s.cls}">
       <header class="psp-order-top">
@@ -70,8 +71,9 @@ function orderCard(o) {
         <span class="psp-badge ${s.cls}">${s.label}</span>
       </header>
       <div class="psp-order-items">${items}</div>
+      ${unpaid ? `<div class="psp-owed">Reserved — pay ${money(o.total)} at the counter</div>` : ''}
       <footer class="psp-order-foot">
-        <span>${money(o.total)}</span>
+        <span>${money(o.total)}${unpaid ? ' due' : ''}</span>
         ${s.cls === 'green'
           ? '<strong class="psp-collect-now">Show this screen at the counter</strong>'
           : `<button class="psp-link" data-psp="reorder" data-id="${esc(o.id)}">Order again</button>`}

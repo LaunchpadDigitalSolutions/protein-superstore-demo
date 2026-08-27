@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Protein Superstore — Staff</title>
 <meta name="theme-color" content="#E4181F">
-<link rel="stylesheet" href="./core/tokens.css?v=1.2.0">
-<link rel="stylesheet" href="./core/ui.css?v=1.2.0">
-<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.2.0">
-<link rel="stylesheet" href="./css/psp.css?v=1.2.0">
-<link rel="stylesheet" href="./css/staff.css?v=1.2.0">
+<link rel="stylesheet" href="./core/tokens.css?v=1.2.1">
+<link rel="stylesheet" href="./core/ui.css?v=1.2.1">
+<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.2.1">
+<link rel="stylesheet" href="./css/psp.css?v=1.2.1">
+<link rel="stylesheet" href="./css/staff.css?v=1.2.1">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body class="staff">
 
 <header class="st-top">
-  <img class="psp-logo" src="./assets/logo.jpg?v=1.2.0" alt="Protein Superstore">
+  <img class="psp-logo" src="./assets/logo.jpg?v=1.2.1" alt="Protein Superstore">
   <span class="st-store" id="stStore">Hartlepool</span>
   <button class="st-bell" id="stBell" aria-label="Turn on order alerts">🔔</button>
 </header>
@@ -41,12 +41,16 @@
 </main>
 
 <script type="module">
-import { configure, db } from './core/db.js?v=1.2.0';
-import { toast } from './core/toast.js?v=1.2.0';
-import { BugReport } from './features/bug-report/bug-report.js?v=1.2.0';
-import { CONFIG } from './js/config.js?v=1.2.0';
-import { isOutstanding, work, minutesWaiting, sortForStaff, newSince,
-         summarise, readyPatch, collectedPatch } from './js/staff.js?v=1.2.0';
+import { configure, db } from './core/db.js?v=1.2.1';
+import { toast } from './core/toast.js?v=1.2.1';
+import { BugReport } from './features/bug-report/bug-report.js?v=1.2.1';
+import { CONFIG } from './js/config.js?v=1.2.1';
+import { Loyalty } from './features/loyalty/loyalty.js?v=1.2.1';
+import { work, minutesWaiting, newSince, summarise, readyPatch, collectedPatch,
+         forStaff, isUnpaid, amountDue, pointsOnCollection } from './js/staff.js?v=1.2.1';
+
+const loyalty = new Loyalty({ mount: document.createElement('div'),
+  venue: CONFIG.venue, brandName: CONFIG.brandName });
 
 configure({ url: CONFIG.sb.url, key: CONFIG.sb.key });
 
@@ -95,7 +99,9 @@ function alertStaff(o) {
   if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
   const w = work(o);
   const body = [w.make.length ? w.make.length + ' to make' : '',
-                w.pick.length ? w.pick.length + ' to pick' : ''].filter(Boolean).join(' · ');
+                w.pick.length ? w.pick.length + ' to pick' : '',
+                isUnpaid(o) ? 'PAY AT COUNTER £' + Number(o.total).toFixed(2) : 'Paid'
+               ].filter(Boolean).join(' · ');
   new Notification('New order #' + o.id, { body, icon: './icon-192.png', tag: o.id });
 }
 
@@ -115,7 +121,9 @@ async function load() {
     const rows = await db('GET',
       `/rest/v1/ls_orders?venue=eq.${encodeURIComponent(CONFIG.venue)}` +
       `&status=eq.active&select=*&order=created_at.asc&limit=50`) || [];
-    const live = sortForStaff(rows.filter(isOutstanding));
+    const groups = forStaff(rows);
+    const live = groups.todo.concat(groups.waiting);
+    window.__groups = groups;
 
     /* Notify once per order, and never on the first load after opening the
        app — otherwise every order already on the list buzzes at once. */
@@ -131,26 +139,19 @@ async function load() {
 }
 
 function paint() {
-  el('stCount').textContent = orders.length
-    ? orders.length + (orders.length === 1 ? ' order waiting' : ' orders waiting')
-    : 'Nothing waiting';
+  const g = window.__groups || { todo: [], waiting: [] };
+  el('stCount').textContent = g.todo.length
+    ? g.todo.length + (g.todo.length === 1 ? ' to do' : ' to do')
+    : 'Nothing to make';
 
-  el('stList').innerHTML = orders.map(o => {
-    const w = work(o);
-    const mins = minutesWaiting(o);
-    return `
-      <article class="st-card">
-        <header class="st-card-top">
-          <div>
-            <div class="st-ref">#${esc(o.id)}</div>
-            <div class="st-meta">${esc(summarise(o))} · waiting ${mins} min</div>
-          </div>
-        </header>
-        ${w.make.length ? group('MAKE', w.make, 'make') : ''}
-        ${w.pick.length ? group('PICK', w.pick, 'pick') : ''}
-        <button class="psp-btn psp-btn-lg" data-ready="${esc(o.id)}">READY TO COLLECT</button>
-      </article>`;
-  }).join('') || `<div class="st-empty">All caught up.</div>`;
+  const section = (title, rows, ready) => rows.length ? `
+    <h2 class="st-sect">${title}</h2>
+    ${rows.map(o => card(o, ready)).join('')}` : '';
+
+  el('stList').innerHTML =
+    (section('TO DO', g.todo, true) +
+     section('WAITING TO BE COLLECTED', g.waiting, false))
+    || `<div class="st-empty">All caught up.</div>`;
 
   el('stFoot').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB',
     { hour: '2-digit', minute: '2-digit' });
@@ -158,6 +159,61 @@ function paint() {
   el('stList').querySelectorAll('[data-ready]').forEach(b => {
     b.onclick = () => markReady(b.dataset.ready, b);
   });
+  el('stList').querySelectorAll('[data-collected]').forEach(b => {
+    b.onclick = () => markCollected(b.dataset.collected, b);
+  });
+}
+
+function card(o, ready) {
+  const w = work(o);
+  const due = amountDue(o);
+  return `
+    <article class="st-card${due ? ' unpaid' : ''}">
+      <header class="st-card-top">
+        <div>
+          <div class="st-ref">#${esc(o.id)}</div>
+          <div class="st-meta">${esc(summarise(o))} · waiting ${minutesWaiting(o)} min</div>
+        </div>
+        ${due
+          ? `<span class="st-due">TAKE<strong>£${due.toFixed(2)}</strong></span>`
+          : `<span class="st-paid">PAID</span>`}
+      </header>
+      ${w.make.length ? group('MAKE', w.make, 'make') : ''}
+      ${w.pick.length ? group('PICK', w.pick, 'pick') : ''}
+      ${ready
+        ? `<button class="psp-btn psp-btn-lg" data-ready="${esc(o.id)}">READY TO COLLECT</button>`
+        : `<button class="psp-btn psp-btn-lg" data-collected="${esc(o.id)}">${
+             due ? 'COLLECTED — £' + due.toFixed(2) + ' TAKEN' : 'COLLECTED'}</button>`}
+    </article>`;
+}
+
+/* Collected is the moment a reserved order is actually paid for, so it is
+   also the moment its points are earned. */
+async function markCollected(id, btn) {
+  const order = orders.find(o => o.id === id);
+  if (!order) return;
+  btn.disabled = true;
+  btn.textContent = 'Closing…';
+  try {
+    await db('PATCH', `/rest/v1/ls_orders?id=eq.${encodeURIComponent(id)}`, collectedPatch());
+    const pts = pointsOnCollection(order, CONFIG.pointsPerPound);
+    if (pts) {
+      try {
+        await loyalty.addPoints(order.customer_email, pts, 'Order ' + id, id);
+        toast(pts + ' points added for ' + order.customer_email, { type: 'success' });
+      } catch (e) {
+        /* The sale is done. Points failing must not look like a failed sale. */
+        toast('Collected. Points did not save (PSP-404)', { type: 'error' });
+      }
+    } else {
+      toast('#' + id + ' collected', { type: 'success' });
+    }
+    await load();
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Try again';
+    toast('Could not close that order (PSP-405)', { type: 'error' });
+  }
 }
 
 function group(label, items, cls) {

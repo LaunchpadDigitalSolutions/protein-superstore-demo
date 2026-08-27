@@ -166,10 +166,23 @@ export function openCheckout() {
       <div class="psp-collect-store">${esc(store.name)}</div>
       <div class="psp-collect-addr">${esc(store.address)}</div>
     </div>
+    <h3 class="psp-h3">How would you like to pay?</h3>
+    <div class="psp-paychoice">
+      <button class="psp-payopt on" data-pay="card">
+        <span class="psp-payopt-t">Pay now</span>
+        <span class="psp-payopt-s">Card. Walk in, collect, walk out.</span>
+      </button>
+      <button class="psp-payopt" data-pay="counter">
+        <span class="psp-payopt-t">Reserve &amp; pay in store</span>
+        <span class="psp-payopt-s">We hold it. Pay at the counter.</span>
+      </button>
+    </div>
     <h3 class="psp-h3">Your details</h3>
     <div id="cc"></div>
-    <h3 class="psp-h3">Payment</h3>
-    <div id="pay"></div>`;
+    <div id="payWrap">
+      <h3 class="psp-h3">Payment</h3>
+      <div id="pay"></div>
+    </div>`;
 
   const modal = new Modal({ title: 'Checkout', content: wrap, actions: [] });
   modal.open();
@@ -199,9 +212,21 @@ export function openCheckout() {
 
   const go = document.createElement('button');
   go.className = 'psp-btn psp-btn-lg';
-  go.textContent = 'Pay ' + money(ctx.cart.subtotal) + ' and pre-order';
-  go.onclick = () => submit({ capture, pay, modal, go });
   wrap.appendChild(go);
+
+  let method = 'card';
+  const setMethod = m => {
+    method = m;
+    wrap.querySelectorAll('[data-pay]').forEach(b => b.classList.toggle('on', b.dataset.pay === m));
+    wrap.querySelector('#payWrap').hidden = (m === 'counter');
+    go.textContent = m === 'counter'
+      ? 'Reserve — pay ' + money(ctx.cart.subtotal) + ' in store'
+      : 'Pay ' + money(ctx.cart.subtotal) + ' and pre-order';
+  };
+  wrap.querySelectorAll('[data-pay]').forEach(b => { b.onclick = () => setMethod(b.dataset.pay); });
+  setMethod('card');
+
+  go.onclick = () => submit({ capture, pay, modal, go, method: () => method });
 }
 
 function prefill(wrap, user) {
@@ -211,7 +236,7 @@ function prefill(wrap, user) {
   set('#lp-cc-email', user.email);
 }
 
-async function submit({ capture, pay, modal, go }) {
+async function submit({ capture, pay, modal, go, method }) {
   /* value() validates and throws — it does not return a list of problems. */
   let details;
   try {
@@ -220,18 +245,27 @@ async function submit({ capture, pay, modal, go }) {
     return toast(e.message.replace(/^LP-\d+:\s*/, ''), { type: 'error' });
   }
 
+  const counter = method() === 'counter';
   go.disabled = true;
-  go.textContent = 'Taking payment…';
+  go.textContent = counter ? 'Reserving…' : 'Taking payment…';
   try {
-    const paid = await pay.submit();
-    if (!paid?.paid) throw new Error('Payment was not completed');
+    if (!counter) {
+      const paid = await pay.submit();
+      if (!paid?.paid) throw new Error('Payment was not completed');
+    }
+
+    /* Points are earned when the money is taken. A reservation has not been
+       paid for and may never be collected, so the staff app awards those at
+       the counter instead. */
+    ctx.cart.loyalty = counter ? null : ctx.loyalty;
 
     const order = await ctx.cart.placeOrder({
       email: details.email, name: details.name, phone: details.phone,
       marketingOptIn: details.marketingOptIn,
       tableNumber: currentStore().name,
-      paymentMethod: 'card-demo'
+      paymentMethod: counter ? 'counter' : 'card-demo'
     });
+    ctx.cart.loyalty = ctx.loyalty;
 
     await capture.save(details, { orderTotal: order.total });
     await ctx.notify.askPermission();
@@ -240,7 +274,9 @@ async function submit({ capture, pay, modal, go }) {
     modal.close();
     ctx.shell.invalidate();
     ctx.shell.go('orders');
-    toast('Order ' + order.ref + ' sent to ' + currentStore().name, { type: 'success' });
+    toast(counter
+      ? 'Reserved — pay ' + money(order.total) + ' at the counter'
+      : 'Order ' + order.ref + ' sent to ' + currentStore().name, { type: 'success' });
   } catch (e) {
     go.disabled = false;
     go.textContent = 'Try again';

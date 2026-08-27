@@ -1,7 +1,8 @@
 /* Staff view logic. The café assumptions this replaces are called out in each
    group heading — these tests exist so they cannot creep back. */
 import { isOutstanding, work, minutesWaiting, sortForStaff, newSince,
-         summarise, readyPatch, collectedPatch } from './js/staff.js';
+         summarise, readyPatch, collectedPatch, stage, isUnpaid, amountDue,
+         forStaff, pointsOnCollection } from './js/staff.js';
 
 let pass=0, fail=0;
 const check=(n,c,x='')=>c?(pass++,console.log('  PASS  '+n)):(fail++,console.log('  FAIL  '+n+(x?'  → '+x:'')));
@@ -55,6 +56,32 @@ check('collecting closes the order', collectedPatch().status === 'complete');
 console.log('\nSummary line\n');
 check('counts every unit, not every line', summarise(order()) === '3 items · £11.97');
 check('one item reads singular', summarise(order({ items:[{n:'x',q:1}], total:2.99 })) === '1 item · £2.99');
+
+console.log('\nReserve and pay at the counter\n');
+const paid = order({ payment:'card-demo' });
+const owed = order({ payment:'counter' });
+check('a prepaid order shows nothing owed', amountDue(paid) === 0);
+check('a reserved order shows the full amount owed', amountDue(owed) === 11.97);
+check('paid is not flagged unpaid', !isUnpaid(paid));
+check('reserved is flagged unpaid', isUnpaid(owed));
+
+console.log('\nA ready order stays on the list until it is collected\n');
+const madeUp = order({ id:'R1', payment:'counter', food_status:'ready', drink_status:'ready' });
+check('made and waiting is not "todo"', stage(madeUp) === 'waiting');
+check('still to make is "todo"', stage(order()) === 'todo');
+check('a collected order drops off', stage(order({ status:'complete' })) === 'done');
+const g = forStaff([madeUp, order({ id:'T1' })]);
+check('work comes first', g.todo.length === 1 && g.todo[0].id === 'T1');
+check('the waiting shelf is separate', g.waiting.length === 1 && g.waiting[0].id === 'R1');
+check('completed orders are excluded', forStaff([order({ status:'complete' })]).todo.length === 0);
+
+console.log('\nPoints are earned on payment, not on ordering\n');
+check('a reserved order earns its points at collection',
+  pointsOnCollection(order({ payment:'counter', customer_email:'a@b.com', total:11.97 }), 10) === 119);
+check('a prepaid order does not earn twice',
+  pointsOnCollection(order({ payment:'card-demo', customer_email:'a@b.com' }), 10) === 0);
+check('a guest with no email earns nothing',
+  pointsOnCollection(order({ payment:'counter', customer_email:null }), 10) === 0);
 
 console.log(`\n${pass} passed, ${fail} failed\n`);
 process.exit(fail?1:0);
