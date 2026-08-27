@@ -26,23 +26,23 @@
 
 const CONFIG = {
   /* Bump this on every deploy. It's what triggers the update. */
-  version: 'v1.1.0',
+  version: 'v1.1.1',
   appName: 'protein-superstore',
 
   /* Cached on install — the app must open with these alone. */
   shell: [
     './',
     './index.html',
-    './css/psp.css',
-    './css/psp-screens.css',
-    './core/tokens.css',
-    './core/ui.css',
+    './css/psp.css?v=1.1.1',
+    './css/psp-screens.css?v=1.1.1',
+    './core/tokens.css?v=1.1.1',
+    './core/ui.css?v=1.1.1',
     './icon-192.png',
     './icon-512.png',
-    './assets/logo.jpg',
-    './assets/hero.jpg',
-    './assets/slush-hero.jpg',
-    './assets/slush-pair.jpg'
+    './assets/logo.jpg?v=1.1.1',
+    './assets/hero.jpg?v=1.1.1',
+    './assets/slush-hero.jpg?v=1.1.1',
+    './assets/slush-pair.jpg?v=1.1.1'
   ],
 
   /* Network first, cache as a fallback. */
@@ -115,8 +115,17 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  /* Code is network first, artwork is cache first.
+
+     This was wrong on the first build: everything same-origin was cache
+     first, keyed on a URL that never changed between deploys. A phone that
+     had opened the app once kept the old stylesheet forever while happily
+     taking the new HTML, so the app rendered new markup with old CSS and
+     looked broken. Scripts and stylesheets now always try the network and
+     only fall back to cache when there is no signal. */
   if (url.origin === self.location.origin) {
-    event.respondWith(cacheFirst(req));
+    const isCode = /\.(js|css)(\?|$)/.test(url.pathname + url.search);
+    event.respondWith(isCode ? networkFirst(req) : cacheFirst(req));
   }
 });
 
@@ -152,6 +161,11 @@ async function networkFirst(req) {
   } catch (e) {
     const cached = await caches.match(req);
     if (cached) return cached;
+    /* An empty list is a sensible offline answer for a data request. It is
+       NOT a sensible answer for a stylesheet — served as JSON it would break
+       the page rather than degrade it. */
+    const isData = /\/rest\/v1\//.test(new URL(req.url).pathname);
+    if (!isData) return new Response('', { status: 504, statusText: 'Offline' });
     return new Response(JSON.stringify([]), {
       status: 200, headers: { 'Content-Type': 'application/json' }
     });

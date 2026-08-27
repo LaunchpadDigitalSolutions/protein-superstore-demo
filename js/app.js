@@ -119,18 +119,18 @@ function buildShell() {
   app.addEventListener('click', onClick);
 }
 
-/* Swap the shell's text title for the client's logo lockup. */
+/* Swap the shell's text title for the client's logo lockup.
+
+   First attempt put the logo in both the sidebar and the top bar. On a phone
+   the sidebar is off-canvas but its logo still bled into view, so two logos
+   overlapped. The top bar is the only place it goes; the sidebar keeps text. */
 function brandTheHeader() {
-  const logo = '<img class="psp-logo" src="./assets/logo.jpg" alt="Protein Superstore">';
-  const side = document.querySelector('.lp-shell-brand');
   const top = document.querySelector('.lp-shell-top');
-  if (side) side.innerHTML = logo;
-  if (top && !top.querySelector('.psp-logo')) {
-    const el = document.createElement('div');
-    el.className = 'psp-topbrand';
-    el.innerHTML = logo;
-    top.appendChild(el);
-  }
+  if (!top || top.querySelector('.psp-logo')) return;
+  const el = document.createElement('div');
+  el.className = 'psp-topbrand';
+  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.1.1" alt="Protein Superstore">';
+  top.appendChild(el);
 }
 
 /* Things that have to happen once a section's HTML is in the DOM. */

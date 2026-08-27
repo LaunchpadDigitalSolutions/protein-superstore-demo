@@ -38,7 +38,7 @@ export async function homeHtml() {
     </div>
 
     <section class="psp-hero" data-psp="go" data-to="shop">
-      <img class="psp-hero-img" src="./assets/hero.jpg" alt="Fuel your results">
+      <img class="psp-hero-img" src="./assets/hero.jpg?v=1.1.1" alt="Fuel your results">
       <button class="psp-btn psp-hero-btn" data-psp="go" data-to="shop">SHOP NOW</button>
     </section>
 
