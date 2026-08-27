@@ -1,0 +1,61 @@
+/* Launchpad Feature — Menu styles. Colours from core/tokens.css. Mobile-first. */
+
+.lp-menu-admin{padding:0 0 40px}
+
+.lp-menu-bar{display:flex;gap:10px;padding:0 0 16px}
+.lp-menu-add{
+  width:auto;padding:0 16px;min-height:var(--tap);border-radius:var(--radius);
+  border:1px dashed var(--border);background:none;color:var(--text-2);
+  font-size:.84rem;font-weight:600;
+}
+.lp-menu-add:active{border-color:var(--brand);color:var(--brand)}
+
+.lp-menu-cat{margin-bottom:22px}
+.lp-menu-cat-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:8px;
+}
+.lp-menu-cat-name{font-family:var(--font-head);font-size:.98rem;font-weight:700;color:var(--text)}
+.lp-menu-cat-meta{font-size:.72rem;color:var(--text-2);margin-top:2px;text-transform:capitalize}
+.lp-menu-cat-actions{display:flex;gap:6px;flex-shrink:0}
+.lp-menu-cat-actions button,
+.lp-menu-item-right button{
+  width:auto;padding:0 12px;min-height:var(--tap);border-radius:6px;
+  border:1px solid var(--border);background:var(--bg-2);color:var(--text-2);
+  font-size:.74rem;font-weight:600;white-space:nowrap;
+}
+.lp-menu-cat-actions button:active,
+.lp-menu-item-right button:active{border-color:var(--brand);color:var(--brand)}
+
+.lp-menu-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+.lp-menu-item:last-child{border-bottom:none}
+.lp-menu-item.sold-out .lp-menu-item-name,
+.lp-menu-item.sold-out .lp-menu-item-price{opacity:.45}
+.lp-menu-item-main{flex:1;min-width:0}
+.lp-menu-item-name{font-size:.9rem;font-weight:600;color:var(--text)}
+.lp-menu-item-desc{font-size:.78rem;color:var(--text-2);margin-top:3px;line-height:1.45}
+.lp-menu-item-choices{font-size:.7rem;color:var(--brand);margin-top:4px}
+.lp-menu-tag{
+  display:inline-block;background:var(--err);color:#fff;border-radius:4px;
+  font-size:.62rem;font-weight:700;padding:2px 6px;vertical-align:middle;
+  text-transform:uppercase;letter-spacing:.4px;opacity:1;
+}
+.lp-menu-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.lp-menu-item-price{font-size:.9rem;font-weight:700;color:var(--text)}
+
+.lp-menu-loading,.lp-menu-empty,.lp-menu-error{
+  text-align:center;padding:36px 16px;color:var(--text-2);font-size:.85rem;line-height:1.5;
+}
+.lp-menu-error{color:var(--err)}
+
+/* Customer-facing menu list */
+.lp-menu-view .lp-menu-item{cursor:pointer}
+.lp-menu-view .lp-menu-item.sold-out{pointer-events:none}
+
+@media (min-width:768px){
+  .lp-menu-admin{max-width:720px}
+  .lp-menu-item-right{flex-direction:row;align-items:center;gap:10px}
+}

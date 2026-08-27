@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Protein Superstore — Order &amp; Rewards</title>
+<meta name="description" content="Pre-order in-store, skip the wait, earn points. Protein Superstore.">
+<meta name="theme-color" content="#E4181F">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+
+<!-- Launchpad modules: tokens first, then each feature's own stylesheet -->
+<link rel="stylesheet" href="/core/tokens.css">
+<link rel="stylesheet" href="/core/ui.css">
+<link rel="stylesheet" href="/features/shell/shell.css">
+<link rel="stylesheet" href="/features/menu/menu.css">
+<link rel="stylesheet" href="/features/cart/cart.css">
+<link rel="stylesheet" href="/features/loyalty/loyalty.css">
+<link rel="stylesheet" href="/features/payment/payment.css">
+<link rel="stylesheet" href="/features/customer-capture/customer-capture.css">
+<link rel="stylesheet" href="/features/order-ready/order-ready.css">
+<link rel="stylesheet" href="/features/wait-times/wait-times.css">
+<link rel="stylesheet" href="/features/bug-report/bug-report.css">
+<!-- Client skin: overrides --brand only, per the build standard -->
+<link rel="stylesheet" href="/css/psp.css">
+<link rel="stylesheet" href="/css/psp-screens.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="boot" class="psp-boot">
+  <div class="psp-boot-mark">PROTEIN<span>SUPERSTORE.CO.UK</span></div>
+  <div class="psp-boot-msg" id="bootMsg">Loading…</div>
+</div>
+
+<div id="app" hidden></div>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

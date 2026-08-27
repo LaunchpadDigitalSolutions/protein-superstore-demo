@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Protein Superstore — Store screen</title>
+<meta name="theme-color" content="#E4181F">
+<link rel="stylesheet" href="/core/tokens.css">
+<link rel="stylesheet" href="/core/ui.css">
+<link rel="stylesheet" href="/features/kitchen/kitchen.css">
+<link rel="stylesheet" href="/features/bug-report/bug-report.css">
+<link rel="stylesheet" href="/css/psp.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,700;1,900&display=swap" rel="stylesheet">
+<style>
+  .psp-staff-top{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:12px 14px; border-bottom:1px solid var(--border); background:#0a0a0a;
+  }
+  .psp-staff-title{ font-style:italic; font-weight:900; text-transform:uppercase; margin-right:auto; }
+  .psp-station{ display:none; padding:12px; }
+  .psp-station.on{ display:block; }
+  .psp-tabs{ display:flex; gap:8px; }
+  .psp-tabs button{
+    min-height:var(--tap); padding:0 16px; border-radius:999px; cursor:pointer; font-weight:700; font-size:14px;
+    background:var(--surface); border:1px solid var(--border); color:var(--text-2);
+  }
+  .psp-tabs button.on{ background:var(--brand); border-color:var(--brand); color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="psp-staff-top">
+  <div class="psp-staff-title">Protein Superstore — store screen</div>
+  <div class="psp-tabs">
+    <button id="tabBar" class="on">Slush bar</button>
+    <button id="tabCounter">Counter</button>
+  </div>
+</div>
+
+<section id="stationBar" class="psp-station on"></section>
+<section id="stationCounter" class="psp-station"></section>
+
+<script type="module">
+  /* Both boards are the Kitchen module — one watching drinks (the slush bar
+     makes them to order) and one watching everything else (counter staff
+     pick it off the shelf). Tapping Ready is what flips the customer's
+     order screen and fires their notification. */
+  import { configure } from '/core/db.js';
+  import { Kitchen } from '/features/kitchen/kitchen.js';
+  import { BugReport } from '/features/bug-report/bug-report.js';
+  import { CONFIG } from '/js/config.js';
+
+  configure({ url: CONFIG.sb.url, key: CONFIG.sb.key });
+
+  const bar = new Kitchen({
+    mount: document.getElementById('stationBar'),
+    venue: CONFIG.venue, station: 'bar', amberMin: 3, redMin: 6
+  });
+  const counter = new Kitchen({
+    mount: document.getElementById('stationCounter'),
+    venue: CONFIG.venue, station: 'kitchen', amberMin: 5, redMin: 10
+  });
+  bar.start();
+  counter.start();
+
+  const tabs = [
+    [document.getElementById('tabBar'), document.getElementById('stationBar')],
+    [document.getElementById('tabCounter'), document.getElementById('stationCounter')]
+  ];
+  tabs.forEach(([btn]) => btn.addEventListener('click', () => {
+    tabs.forEach(([b, s]) => {
+      const on = b === btn;
+      b.classList.toggle('on', on);
+      s.classList.toggle('on', on);
+    });
+  }));
+
+  new BugReport({
+    clientRef: CONFIG.clientRef,
+    getUser: () => ({ email: null, role: 'staff' }),
+    getView: () => 'store-screen'
+  }).mount(document.body);
+</script>
+</body>
+</html>

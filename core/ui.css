@@ -1,0 +1,128 @@
+/* Launchpad Core — Toast and Modal styles.
+   Colours from core/tokens.css. Mobile-first. */
+
+/* ---------- Toast ---------- */
+.lp-toast-host{
+  position:fixed;left:0;right:0;bottom:0;z-index:900;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:0 16px calc(20px + env(safe-area-inset-bottom));
+  pointer-events:none;
+}
+.lp-toast{
+  pointer-events:auto;display:flex;align-items:center;gap:12px;
+  max-width:100%;background:var(--surface);color:var(--text);
+  border:1px solid var(--border);border-radius:99px;
+  padding:12px 20px;font-size:.85rem;font-weight:600;
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .3s,transform .3s cubic-bezier(.32,1.14,.5,1);
+}
+.lp-toast.on{opacity:1;transform:translateY(0)}
+.lp-toast-msg{overflow:hidden;text-overflow:ellipsis}
+.lp-toast-success{border-color:var(--ok)}
+.lp-toast-success .lp-toast-msg{color:var(--ok)}
+.lp-toast-error{border-color:var(--err)}
+.lp-toast-error .lp-toast-msg{color:var(--err)}
+.lp-toast-action{
+  background:none;border:none;color:var(--brand);
+  font-size:.82rem;font-weight:700;padding:0;min-height:auto;width:auto;
+  flex-shrink:0;
+}
+
+/* ---------- Modal ---------- */
+.lp-modal-backdrop{
+  position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.6);
+  opacity:0;transition:opacity .22s;
+  display:flex;align-items:stretch;justify-content:center;
+}
+.lp-modal-backdrop.on{opacity:1}
+
+/* Mobile: full screen */
+.lp-modal{
+  background:var(--bg);color:var(--text);width:100%;
+  display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top);
+  transform:translateY(16px);transition:transform .22s cubic-bezier(.32,1.14,.5,1);
+}
+.lp-modal-backdrop.on .lp-modal{transform:translateY(0)}
+.lp-modal:focus{outline:none}
+
+.lp-modal-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.lp-modal-title{font-family:var(--font-head);font-size:1rem;font-weight:700}
+.lp-modal-x{
+  background:none;border:none;color:var(--text-2);font-size:1.1rem;
+  width:var(--tap);min-height:var(--tap);flex-shrink:0;
+}
+.lp-modal-body{padding:18px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.lp-modal-text{margin:0;font-size:.9rem;line-height:1.55;color:var(--text-2)}
+
+.lp-modal-foot{
+  display:flex;gap:10px;padding:14px 18px;
+  padding-bottom:calc(14px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.lp-modal-btn{
+  flex:1;min-height:var(--tap);border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg-2);color:var(--text);
+  font-size:.88rem;font-weight:600;
+}
+.lp-modal-btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.lp-modal-btn-primary:active{background:var(--brand-dark)}
+.lp-modal-btn-danger{background:var(--err);border-color:var(--err);color:#fff}
+.lp-modal-btn-cancel{background:none}
+
+/* Desktop: centred box */
+@media (min-width:768px){
+  .lp-modal-backdrop{align-items:center;padding:24px}
+  .lp-modal{
+    max-width:560px;max-height:90vh;border-radius:var(--radius-lg);
+    border:1px solid var(--border);padding-top:0;
+    transform:translateY(0) scale(.97);
+  }
+  .lp-modal-backdrop.on .lp-modal{transform:translateY(0) scale(1)}
+  .lp-modal-foot{justify-content:flex-end;padding-bottom:14px}
+  .lp-modal-btn{flex:0 0 auto;padding:0 22px}
+  .lp-toast-host{align-items:flex-end;padding-right:24px}
+}
+
+/* ---------- Tabs ---------- */
+.lp-tabs-bar{
+  display:flex;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border-bottom:1px solid var(--border);scrollbar-width:none;
+}
+.lp-tabs-bar::-webkit-scrollbar{display:none}
+.lp-tab{
+  flex:0 0 auto;display:flex;align-items:center;gap:6px;
+  background:none;border:none;border-bottom:2px solid transparent;
+  color:var(--text-2);font-size:.85rem;font-weight:600;
+  padding:0 14px;min-height:var(--tap-nav);white-space:nowrap;width:auto;
+}
+.lp-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+.lp-tab:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
+.lp-tab-badge{
+  background:var(--bg-2);color:var(--text-2);border-radius:99px;
+  font-size:.68rem;font-weight:700;padding:2px 7px;min-width:20px;text-align:center;
+}
+.lp-tab.on .lp-tab-badge{background:var(--brand);color:#fff}
+.lp-tabs-panel{padding:18px 0}
+.lp-tabs-loading,.lp-tabs-error{
+  text-align:center;padding:32px 16px;color:var(--text-2);font-size:.85rem;
+}
+.lp-tabs-error{color:var(--err)}
+
+/* Markup-attached tabs (Tabs.attach) */
+[data-panel]{display:none}
+[data-panel].on{display:block}
+
+/* ---------- Export button ---------- */
+.lp-export-btn{
+  display:inline-flex;align-items:center;gap:7px;width:auto;
+  background:var(--bg-2);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--radius);padding:0 16px;min-height:var(--tap);
+  font-size:.82rem;font-weight:600;white-space:nowrap;
+}
+.lp-export-btn:active{border-color:var(--brand)}
+.lp-export-btn:disabled{opacity:.6;cursor:wait}

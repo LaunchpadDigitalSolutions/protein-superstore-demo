@@ -1,0 +1,43 @@
+/* Launchpad Feature — Payment styles. Colours from core/tokens.css. */
+
+.lp-pay-demo-flag{
+  background:var(--warn);color:#000;border-radius:var(--radius) var(--radius) 0 0;
+  padding:8px 14px;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:0;
+}
+.lp-pay-blocked{
+  background:var(--bg-2);border:1px solid var(--err);border-radius:var(--radius);
+  padding:16px;font-size:.83rem;color:var(--text-2);line-height:1.6;
+}
+.lp-pay-blocked strong{display:block;color:var(--err);margin-bottom:6px}
+.lp-pay-blocked code{background:var(--surface);padding:1px 5px;border-radius:3px;color:var(--text)}
+
+.lp-pay-total{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px;background:var(--bg-2);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:16px;
+  font-size:1rem;font-weight:700;color:var(--text);
+}
+.lp-pay-demo-flag + .lp-pay-total{border-radius:0 0 var(--radius) var(--radius);border-top:none}
+
+.lp-pay-field{margin-bottom:14px;flex:1;min-width:0}
+.lp-pay-row{display:flex;gap:10px}
+.lp-pay-label{display:block;font-size:.78rem;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.lp-pay-input{
+  background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:0 12px;color:var(--text);font-variant-numeric:tabular-nums;
+}
+.lp-pay-input:focus{outline:none;border-color:var(--brand)}
+
+.lp-pay-go{
+  width:100%;min-height:52px;border:none;border-radius:var(--radius);
+  background:var(--brand);color:#fff;font-size:.95rem;font-weight:700;
+}
+.lp-pay-go:active{background:var(--brand-dark)}
+.lp-pay-go:disabled{opacity:.6}
+
+.lp-pay-note{
+  font-size:.76rem;color:var(--text-2);line-height:1.55;margin-top:12px;text-align:center;
+}
+.lp-pay-note code{background:var(--surface);padding:1px 5px;border-radius:3px;color:var(--text)}
+.lp-pay-err{display:none;color:var(--err);font-size:.82rem;margin-top:12px;line-height:1.45;text-align:center}

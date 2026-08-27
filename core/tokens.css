@@ -1,0 +1,49 @@
+/* Launchpad brand tokens — single source of truth.
+   Values taken from launchpadme.co.uk.
+   Client apps override --brand / --brand-2 only. Nothing else. */
+:root{
+  /* Brand */
+  --brand:#2563eb;
+  --brand-dark:#1d4ed8;
+  --brand-2:#8b62c4;
+
+  /* Surfaces (dark default) */
+  --bg:#09090b;
+  --bg-2:#18181b;
+  --surface:#27272a;
+  --border:#3f3f46;
+
+  /* Text */
+  --text:#fafafa;
+  --text-2:#a1a1aa;
+
+  /* Status */
+  --ok:#10b981;
+  --warn:#f59e0b;
+  --err:#ef4444;
+
+  /* Type */
+  --font-head:'Bricolage Grotesque',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+
+  /* Mobile-first sizing — per Launchpad build standard */
+  --tap:44px;          /* minimum touch target */
+  --tap-nav:48px;
+  --input-size:16px;   /* never smaller: iOS zooms the page below 16px */
+  --radius:10px;
+  --radius-lg:14px;
+}
+
+/* Light surface variant: <body data-theme="light"> */
+[data-theme="light"]{
+  --bg:#ffffff; --bg-2:#f4f4f5; --surface:#ffffff;
+  --border:#e4e4e7; --text:#18181b; --text-2:#71717a;
+}
+
+/* Global mobile-first base */
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overscroll-behavior:none;overflow-x:hidden;margin:0;
+     font-family:var(--font-body);background:var(--bg);color:var(--text)}
+input,select,textarea{font-size:var(--input-size);min-height:var(--tap);width:100%}
+button{min-height:var(--tap);cursor:pointer;font-family:inherit}

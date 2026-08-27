@@ -1,0 +1,98 @@
+/* Launchpad Feature — Kitchen styles.
+   Designed for a screen on a wall, read at arm's length, tapped with
+   greasy hands. Bigger type and bigger targets than the customer side. */
+
+.lp-kitchen{padding:0 0 40px}
+
+.lp-kit-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 0 14px;border-bottom:1px solid var(--border);margin-bottom:14px;
+}
+.lp-kit-title{font-family:var(--font-head);font-size:1.25rem;font-weight:800}
+.lp-kit-badge{
+  background:var(--brand);color:#fff;border-radius:99px;
+  padding:6px 14px;font-size:.8rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.lp-kit-badge.zero{background:var(--bg-2);color:var(--text-2)}
+
+.lp-kit-offline{
+  background:var(--bg-2);border:1px solid var(--warn);border-radius:var(--radius);
+  padding:12px 14px;font-size:.82rem;color:var(--warn);margin-bottom:14px;line-height:1.45;
+}
+
+.lp-kit-grid{display:grid;gap:12px}
+
+.lp-kit-card{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-left:4px solid var(--brand);border-radius:var(--radius);
+  padding:14px;
+}
+.lp-kit-card.ready{border-left-color:var(--ok);opacity:.72}
+
+.lp-kit-card-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;
+}
+.lp-kit-table{font-family:var(--font-head);font-size:1.15rem;font-weight:800;color:var(--text)}
+.lp-kit-ref{font-size:.72rem;color:var(--text-2);margin-top:2px;letter-spacing:.4px}
+.lp-kit-timer{
+  font-variant-numeric:tabular-nums;font-size:1.1rem;font-weight:800;
+  padding:4px 10px;border-radius:6px;flex-shrink:0;
+}
+.lp-kit-timer.green{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.lp-kit-timer.amber{color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)}
+.lp-kit-timer.red{color:#fff;background:var(--err)}
+
+.lp-kit-items{margin-bottom:12px}
+.lp-kit-item{display:flex;gap:10px;padding:5px 0;font-size:1rem;line-height:1.35}
+.lp-kit-qty{font-weight:800;color:var(--brand);min-width:30px;flex-shrink:0}
+.lp-kit-name{color:var(--text)}
+
+.lp-kit-actions{display:flex;gap:10px}
+.lp-kit-btn{
+  flex:1;min-height:52px;border-radius:var(--radius);border:none;
+  font-size:.95rem;font-weight:700;color:#fff;
+}
+.lp-kit-btn.ready{background:var(--brand)}
+.lp-kit-btn.ready:active{background:var(--brand-dark)}
+.lp-kit-btn.done{background:var(--ok)}
+.lp-kit-btn:disabled{opacity:.5}
+
+.lp-kit-empty{
+  text-align:center;padding:60px 18px;color:var(--text-2);font-size:.95rem;
+  border:1px dashed var(--border);border-radius:var(--radius);
+}
+
+/* Recently cleared */
+.lp-kit-tray{
+  margin-top:22px;padding-top:14px;border-top:1px solid var(--border);
+}
+.lp-kit-tray-title{
+  font-size:.72rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--text-2);margin-bottom:8px;
+}
+.lp-kit-tray-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:8px 0;font-size:.82rem;color:var(--text-2);
+}
+.lp-kit-ago{opacity:.7;margin-left:6px}
+.lp-kit-tray-row button{
+  width:auto;padding:0 14px;min-height:var(--tap);border-radius:6px;
+  border:1px solid var(--border);background:none;color:var(--text-2);
+  font-size:.76rem;font-weight:600;flex-shrink:0;
+}
+.lp-kit-tray-row button:active{border-color:var(--brand);color:var(--brand)}
+
+/* Wall-mounted screens: more columns, bigger everything */
+@media (min-width:768px){
+  .lp-kit-grid{grid-template-columns:repeat(2,1fr)}
+  .lp-kit-item{font-size:1.05rem}
+}
+@media (min-width:1200px){
+  .lp-kit-grid{grid-template-columns:repeat(3,1fr)}
+  .lp-kit-title{font-size:1.5rem}
+  .lp-kit-table{font-size:1.3rem}
+  .lp-kit-item{font-size:1.15rem}
+  .lp-kit-btn{min-height:56px;font-size:1rem}
+}

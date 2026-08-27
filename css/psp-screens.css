@@ -1,0 +1,201 @@
+/* Screen components. Base styles are 375px; everything scales up. */
+
+/* ---------- welcome strip ---------- */
+.psp-welcome{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.psp-avatar{
+  width:36px; height:36px; border-radius:50%; background:var(--brand);
+  display:grid; place-content:center; font-weight:900; font-style:italic; flex:0 0 auto;
+}
+.psp-avatar.lg{ width:56px; height:56px; font-size:22px; }
+.psp-welcome-txt{ flex:1; font-size:15px; color:var(--text-2); }
+.psp-welcome-txt strong{ color:#fff; }
+.psp-points-pill{
+  background:var(--brand); border-radius:6px; padding:4px 10px; text-align:center;
+  font-weight:900; font-size:15px; line-height:1;
+}
+.psp-points-pill span{ display:block; font-size:9px; letter-spacing:1px; font-weight:700; }
+
+/* ---------- hero ---------- */
+.psp-hero{
+  position:relative; border-radius:var(--radius-lg); overflow:hidden; padding:22px 16px;
+  background:
+    radial-gradient(120% 90% at 85% 40%, rgba(228,24,31,.35), transparent 60%),
+    linear-gradient(120deg,#151515 0%,#0a0a0a 60%);
+  border:1px solid var(--border);
+}
+.psp-hero-h{
+  font-family:var(--font-head); font-style:italic; font-weight:900; font-size:34px;
+  line-height:.94; letter-spacing:-1px; text-transform:uppercase; margin:0 0 14px;
+}
+.psp-hero-h em{ color:var(--brand); font-style:italic; }
+
+/* ---------- quick tiles ---------- */
+.psp-tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
+.psp-tile{
+  min-height:88px; padding:10px 4px; border-radius:var(--radius); cursor:pointer;
+  background:var(--surface); border:1px solid var(--border); color:var(--text);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+}
+.psp-tile-icon{ font-size:19px; }
+.psp-tile-label{ font-size:10px; font-weight:800; letter-spacing:.4px; }
+.psp-tile-sub{ font-size:9px; color:var(--text-2); }
+
+/* ---------- promo ---------- */
+.psp-promo{
+  position:relative; display:flex; align-items:center; gap:8px; cursor:pointer;
+  margin:14px 0; padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border);
+  background:linear-gradient(100deg,#101010 40%,#1b0d10 100%);
+}
+.psp-promo-flag{
+  position:absolute; top:10px; right:10px; background:var(--brand);
+  font-size:10px; font-weight:900; letter-spacing:1px; padding:3px 8px; border-radius:4px;
+}
+.psp-promo-copy{ flex:1; min-width:0; }
+.psp-promo-h{
+  font-family:var(--font-head); font-style:italic; font-weight:900; font-size:26px;
+  line-height:.92; text-transform:uppercase; margin:0 0 6px;
+}
+.psp-promo-h em{ color:var(--brand); font-style:italic; }
+.psp-promo-copy p{ color:var(--text-2); font-size:13px; margin:0 0 10px; }
+.psp-promo-art{ display:flex; align-items:flex-end; flex:0 0 auto; }
+
+/* ---------- product cards ---------- */
+.psp-rowhead{ display:flex; align-items:center; justify-content:space-between; }
+.psp-rail{ display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; scroll-snap-type:x mandatory; }
+.psp-railcard{ flex:0 0 44%; scroll-snap-align:start; }
+.psp-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.psp-card,.psp-railcard{
+  position:relative; text-align:left; cursor:pointer; padding:12px 10px 14px;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); color:var(--text);
+}
+.psp-card-art{ display:grid; place-content:center; min-height:92px; margin-bottom:8px; }
+.psp-card-name{ font-size:13px; font-weight:600; line-height:1.25; min-height:2.5em; }
+.psp-card-price{ font-weight:900; font-size:15px; margin-top:4px; }
+.psp-card-price span{ font-size:10px; color:var(--text-2); font-weight:600; margin-left:4px; }
+.psp-card-add{
+  position:absolute; right:10px; bottom:10px; width:30px; height:30px; border-radius:7px;
+  background:var(--brand); display:grid; place-content:center; font-size:19px; line-height:1;
+}
+
+/* ---------- shop chips ---------- */
+.psp-chiprow{ display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; }
+.psp-chip{
+  flex:0 0 auto; min-height:var(--tap); padding:0 14px; border-radius:999px; cursor:pointer;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-2); font-size:13px; font-weight:700;
+}
+.psp-chip.on{ background:var(--brand); border-color:var(--brand); color:#fff; }
+
+/* ---------- product sheet ---------- */
+.psp-sheet-art{ display:grid; place-content:center; padding:6px 0 14px; }
+.psp-sheet-desc{ color:var(--text-2); font-size:14px; margin-bottom:16px; }
+.psp-group{ margin-bottom:16px; }
+.psp-group-label{ font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); margin-bottom:8px; }
+.psp-group-label span{ text-transform:none; letter-spacing:0; }
+.psp-opts{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.psp-opt{
+  min-height:var(--tap); padding:8px; border-radius:9px; cursor:pointer; font-size:13px; font-weight:600;
+  background:var(--bg-2); border:1.5px solid var(--border); color:var(--text);
+}
+.psp-opt.on{ border-color:var(--brand); background:rgba(228,24,31,.12); }
+.psp-opt em{ display:block; font-style:normal; font-size:11px; color:var(--text-2); }
+.psp-sheet-total{
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--border); padding-top:12px; font-size:14px; color:var(--text-2);
+}
+.psp-sheet-total strong{ font-size:22px; color:#fff; font-weight:900; }
+
+/* ---------- basket + checkout ---------- */
+.psp-basketbar{
+  position:fixed; left:12px; right:12px; bottom:calc(72px + env(safe-area-inset-bottom));
+  z-index:90; min-height:56px; border:0; border-radius:12px; cursor:pointer;
+  background:var(--brand); color:#fff; font-size:16px; font-weight:800;
+  display:flex; align-items:center; gap:10px; padding:0 16px; box-shadow:0 10px 24px rgba(0,0,0,.5);
+}
+.psp-basketbar span{ flex:0 0 auto; }
+.psp-basketbar span:nth-child(2){ flex:1; text-align:left; }
+.psp-basketbar-count{
+  background:rgba(0,0,0,.28); border-radius:6px; min-width:26px; height:26px;
+  display:grid; place-content:center; font-size:14px;
+}
+.psp-line{ display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;
+  padding:12px 0; border-bottom:1px solid var(--border); }
+.psp-line-name{ font-size:14px; font-weight:600; }
+.psp-line-note{ font-size:12px; color:var(--text-2); }
+.psp-line-price{ font-weight:800; font-size:14px; min-width:56px; text-align:right; }
+.psp-qty{ display:flex; align-items:center; gap:4px; }
+.psp-qty button{
+  width:var(--tap); height:var(--tap); border-radius:8px; cursor:pointer; font-size:18px;
+  background:var(--bg-2); border:1px solid var(--border); color:var(--text);
+}
+.psp-collect{ background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius); padding:12px; margin-top:14px; }
+.psp-collect-label{ font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); }
+.psp-collect-store{ font-weight:900; font-style:italic; font-size:18px; }
+.psp-collect-addr{ font-size:13px; color:var(--text-2); }
+
+/* ---------- orders ---------- */
+.psp-order{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-bottom:12px; }
+.psp-order.green{ border-color:#15803d; }
+.psp-order-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.psp-order-ref{ font-weight:900; font-style:italic; font-size:16px; }
+.psp-order-when{ font-size:12px; color:var(--text-2); }
+.psp-order-items{ font-size:13px; color:var(--text-2); margin:10px 0; line-height:1.6; }
+.psp-order-foot{ display:flex; justify-content:space-between; align-items:center; font-weight:800; border-top:1px solid var(--border); padding-top:10px; }
+.psp-badge{ font-size:11px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; padding:5px 9px; border-radius:6px; }
+.psp-badge.amber{ background:#78350f; color:#fde68a; }
+.psp-badge.green{ background:#14532d; color:#bbf7d0; }
+.psp-badge.grey{ background:var(--bg-2); color:var(--text-2); }
+.psp-collect-now{ color:#4ade80; font-size:13px; }
+.psp-empty{ text-align:center; padding:40px 16px; color:var(--text-2); }
+.psp-empty-icon{ font-size:40px; margin-bottom:8px; }
+
+/* ---------- account ---------- */
+.psp-acct-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.psp-acct-name{ font-weight:900; font-style:italic; font-size:19px; }
+.psp-acct-mail{ font-size:13px; color:var(--text-2); }
+.psp-stores,.psp-rows{ display:flex; flex-direction:column; gap:8px; }
+.psp-store,.psp-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left;
+  min-height:var(--tap); padding:12px; border-radius:var(--radius); cursor:pointer; text-decoration:none;
+  background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:15px;
+}
+.psp-store.on{ border-color:var(--brand); }
+.psp-store-name{ font-weight:800; }
+.psp-store-addr,.psp-store-hours{ font-size:12px; color:var(--text-2); }
+.psp-tick{ color:var(--brand); font-size:18px; opacity:0; }
+.psp-store.on .psp-tick{ opacity:1; }
+.psp-storecard{
+  display:flex; align-items:center; justify-content:space-between; cursor:pointer; margin-top:16px;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px;
+}
+.psp-storecard-label{ font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); }
+.psp-storecard-name{ font-weight:900; font-style:italic; font-size:18px; }
+.psp-storecard-hours{ font-size:12px; color:var(--text-2); }
+.psp-version{ margin-top:24px; font-size:11px; color:var(--text-2); line-height:1.6; }
+
+/* ---------- spin + offers ---------- */
+.psp-spin{ text-align:center; padding:10px 0; }
+.psp-spin-wheel{
+  width:130px; height:130px; margin:0 auto 16px; border-radius:50%; font-size:52px;
+  display:grid; place-content:center; border:6px solid var(--brand); background:var(--bg-2);
+}
+.psp-spin-wheel.spinning{ animation:psp-spin 0.5s linear infinite; }
+.psp-spin-wheel.done{ border-color:#15803d; color:#4ade80; }
+@keyframes psp-spin{ to{ transform:rotate(360deg); } }
+.psp-spin-msg{ color:var(--text-2); font-size:14px; }
+.psp-offer{ background:var(--bg-2); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-bottom:10px; }
+.psp-offer h3{ margin:0 0 6px; font-style:italic; font-weight:900; font-size:16px; text-transform:uppercase; }
+.psp-offer p{ margin:0; font-size:13px; color:var(--text-2); }
+.psp-offer-tag{ display:inline-block; margin-top:8px; background:var(--brand); font-size:11px; font-weight:800; padding:3px 8px; border-radius:5px; }
+
+/* ---------- wider screens ---------- */
+@media (min-width:480px){
+  .psp-grid{ grid-template-columns:repeat(3,1fr); }
+  .psp-railcard{ flex-basis:30%; }
+  .psp-hero-h{ font-size:40px; }
+}
+@media (min-width:768px){
+  .psp-grid{ grid-template-columns:repeat(4,1fr); }
+  .psp-railcard{ flex-basis:22%; }
+  .psp-basketbar{ left:auto; right:24px; width:340px; bottom:24px; }
+  .psp-opts{ grid-template-columns:repeat(4,1fr); }
+}

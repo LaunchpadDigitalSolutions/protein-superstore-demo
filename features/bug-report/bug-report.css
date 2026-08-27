@@ -1,0 +1,102 @@
+/* Launchpad Feature — Bug report styles. Colours from core/tokens.css. */
+
+.lp-bug-fab{
+  position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:700;display:flex;align-items:center;gap:8px;width:auto;
+  background:var(--surface);color:var(--text-2);
+  border:1px solid var(--border);border-radius:99px;
+  padding:0 16px;min-height:var(--tap);
+  font-size:.78rem;font-weight:600;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.lp-bug-fab:active{border-color:var(--brand);color:var(--brand)}
+.lp-bug-fab > span:first-child{
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--warn);color:#000;font-weight:800;font-size:.72rem;
+}
+/* Icon only on small screens — the button must not cover the app */
+.lp-bug-fab-text{display:none}
+@media (min-width:480px){ .lp-bug-fab-text{display:inline} }
+
+.lp-bug-panel{
+  position:fixed;inset:0;z-index:750;background:rgba(0,0,0,.6);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.lp-bug-panel.on{opacity:1}
+
+.lp-bug-sheet{
+  background:var(--bg);width:100%;max-height:90vh;
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  border:1px solid var(--border);border-bottom:none;
+  display:flex;flex-direction:column;
+  transform:translateY(20px);transition:transform .22s cubic-bezier(.32,1.14,.5,1);
+}
+.lp-bug-panel.on .lp-bug-sheet{transform:translateY(0)}
+
+.lp-bug-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 18px;border-bottom:1px solid var(--border);
+}
+.lp-bug-title{font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--text)}
+.lp-bug-x{
+  background:none;border:none;color:var(--text-2);font-size:1.05rem;
+  width:var(--tap);min-height:var(--tap);flex-shrink:0;
+}
+
+.lp-bug-body{padding:18px;overflow-y:auto;flex:1}
+.lp-bug-label{
+  display:block;font-size:.76rem;font-weight:600;color:var(--text-2);
+  margin-bottom:6px;
+}
+.lp-bug-label + .lp-bug-input{margin-bottom:14px}
+.lp-bug-input{
+  background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:10px 12px;color:var(--text);resize:vertical;
+}
+.lp-bug-input:focus{outline:none;border-color:var(--brand)}
+.lp-bug-err{display:none;color:var(--err);font-size:.8rem;margin-top:4px;line-height:1.45}
+
+.lp-bug-foot{
+  display:flex;gap:10px;padding:14px 18px;
+  padding-bottom:calc(14px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--border);
+}
+.lp-bug-btn{
+  flex:1;min-height:var(--tap);border-radius:var(--radius);
+  border:1px solid var(--border);background:none;color:var(--text);
+  font-size:.88rem;font-weight:600;
+}
+.lp-bug-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.lp-bug-btn.primary:active{background:var(--brand-dark)}
+.lp-bug-btn:disabled{opacity:.6}
+
+.lp-bug-thanks{
+  padding:36px 24px calc(28px + env(safe-area-inset-bottom));
+  text-align:center;
+}
+.lp-bug-tick{
+  width:52px;height:52px;margin:0 auto 14px;border-radius:50%;
+  background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;
+}
+.lp-bug-thanks-title{
+  font-family:var(--font-head);font-size:1rem;font-weight:700;
+  color:var(--text);margin-bottom:6px;
+}
+.lp-bug-thanks-sub{
+  font-size:.83rem;color:var(--text-2);line-height:1.55;
+  max-width:340px;margin:0 auto 20px;
+}
+.lp-bug-thanks .lp-bug-btn{max-width:200px;margin:0 auto}
+
+@media (min-width:768px){
+  .lp-bug-panel{align-items:center}
+  .lp-bug-sheet{
+    max-width:460px;border-radius:var(--radius-lg);
+    border-bottom:1px solid var(--border);
+  }
+  .lp-bug-foot{justify-content:flex-end;padding-bottom:14px}
+  .lp-bug-btn{flex:0 0 auto;padding:0 22px}
+}

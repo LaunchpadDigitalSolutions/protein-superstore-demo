@@ -1,0 +1,75 @@
+/* Launchpad Feature — Loyalty styles.
+   All colours come from core/tokens.css. Nothing hardcoded.
+   Mobile-first: base styles are 375px, scale up with min-width. */
+
+.lp-loyalty{max-width:100%;padding:0 18px 40px}
+
+/* Lookup screen */
+.lp-ly-look{padding:30px 0;text-align:center}
+.lp-ly-title{font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.lp-ly-sub{font-size:.83rem;color:var(--text-2);margin-bottom:20px;line-height:1.5}
+.lp-ly-input{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:0 14px;color:var(--text);text-align:center}
+.lp-ly-input:focus{outline:none;border-color:var(--brand)}
+.lp-ly-err{color:var(--err);font-size:.8rem;margin-top:10px;display:none}
+
+.lp-ly-btn{width:100%;min-height:var(--tap);margin-top:14px;border:none;border-radius:var(--radius);
+  background:var(--brand);color:#fff;font-size:.9rem;font-weight:700}
+.lp-ly-btn:active{background:var(--brand-dark)}
+.lp-ly-btn-ghost{background:none;border:1px solid var(--border);color:var(--text);margin-top:24px}
+
+/* Points card */
+.lp-ly-card{background:linear-gradient(135deg,var(--brand-2),var(--brand-dark));
+  border-radius:var(--radius-lg);padding:22px;color:#fff;margin-bottom:18px}
+.lp-ly-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.lp-ly-brand{font-family:var(--font-head);font-size:1.05rem;font-weight:700;letter-spacing:.3px}
+.lp-ly-brand span{display:block;font-size:.68rem;font-weight:500;letter-spacing:1.6px;opacity:.72;margin-top:2px}
+.lp-ly-pts{font-size:2.5rem;font-weight:700;line-height:1}
+.lp-ly-plabel{font-size:.68rem;letter-spacing:1.4px;text-transform:uppercase;opacity:.75;margin-top:2px}
+.lp-ly-bar{height:6px;background:rgba(255,255,255,.24);border-radius:3px;margin:16px 0 8px;overflow:hidden}
+.lp-ly-fill{height:100%;background:#fff;border-radius:3px;width:0;
+  transition:width .7s cubic-bezier(.32,1.14,.5,1)}
+.lp-ly-next{font-size:.78rem;opacity:.9}
+
+/* Stats */
+.lp-ly-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.lp-ly-stat{background:var(--bg-2);border-radius:var(--radius);padding:13px 8px;text-align:center}
+.lp-ly-sv{font-size:1.15rem;font-weight:700;color:var(--text)}
+.lp-ly-sl{font-size:.66rem;color:var(--text-2);margin-top:3px;letter-spacing:.3px}
+
+/* Sections */
+.lp-ly-sec{font-size:.74rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--text-2);margin:20px 0 10px}
+
+/* Rewards */
+.lp-ly-reward{display:flex;align-items:center;justify-content:space-between;padding:13px;
+  border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px}
+.lp-ly-reward.can{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 6%,transparent)}
+.lp-ly-rname{font-size:.88rem;font-weight:600;color:var(--text)}
+.lp-ly-rcost{font-size:.74rem;color:var(--text-2);margin-top:2px}
+.lp-ly-rbtn{min-height:var(--tap);padding:0 16px;border-radius:6px;border:none;
+  background:var(--brand);color:#fff;font-size:.76rem;font-weight:700;width:auto}
+.lp-ly-rbtn:disabled{background:var(--border);color:var(--text-2);cursor:not-allowed}
+
+/* Earn rules */
+.lp-ly-earn{display:flex;align-items:center;gap:12px;padding:11px 0}
+.lp-ly-earn+.lp-ly-earn{border-top:1px solid var(--border)}
+.lp-ly-eicon{width:34px;height:34px;border-radius:8px;background:var(--bg-2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.lp-ly-elabel{font-size:.85rem;color:var(--text);flex:1}
+.lp-ly-epts{font-size:.82rem;font-weight:700;color:var(--brand)}
+
+/* Toast */
+.lp-ly-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);
+  background:var(--surface);color:var(--text);padding:13px 20px;border-radius:9px;
+  font-size:.85rem;font-weight:600;z-index:999;opacity:0;
+  border:1px solid var(--border);
+  transition:transform .35s cubic-bezier(.32,1.14,.5,1),opacity .35s;
+  margin-bottom:env(safe-area-inset-bottom)}
+.lp-ly-toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* Tablet and up */
+@media (min-width:768px){
+  .lp-loyalty{max-width:520px;margin:0 auto}
+  .lp-ly-rbtn{padding:0 20px}
+}

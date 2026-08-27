@@ -1,0 +1,21 @@
+/* Launchpad Feature — Order ready banner. Colours from core/tokens.css. */
+
+.lp-ready-banner{
+  position:fixed;left:12px;right:12px;
+  top:calc(12px + env(safe-area-inset-top));
+  z-index:850;
+  background:var(--ok);color:#08130d;
+  border-radius:var(--radius-lg);padding:14px 18px;
+  box-shadow:0 8px 28px rgba(0,0,0,.4);
+  transform:translateY(-140%);opacity:0;
+  transition:transform .4s cubic-bezier(.32,1.14,.5,1),opacity .3s;
+}
+.lp-ready-banner.on{transform:translateY(0);opacity:1}
+.lp-ready-title{
+  font-family:var(--font-head);font-size:1rem;font-weight:800;margin-bottom:2px;
+}
+.lp-ready-sub{font-size:.82rem;opacity:.85;line-height:1.4}
+
+@media (min-width:768px){
+  .lp-ready-banner{left:auto;right:24px;width:360px}
+}

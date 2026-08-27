@@ -1,0 +1,107 @@
+/* Launchpad Feature — Shell styles.
+   Per the Launchpad mobile-first build standard: bottom nav below 768px,
+   sidebar above. 375px base, min-width queries only. */
+
+.lp-shell{min-height:100vh;display:flex;flex-direction:column}
+
+/* ---------- top bar ---------- */
+.lp-shell-top{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  padding:0 14px;padding-top:env(safe-area-inset-top);
+  min-height:56px;
+}
+.lp-shell-burger{
+  width:var(--tap);min-height:var(--tap);flex-shrink:0;
+  background:none;border:none;color:var(--text);font-size:1.15rem;
+}
+.lp-shell-heading{
+  font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--text);
+}
+
+.lp-shell-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.lp-shell-body{
+  flex:1;padding:18px 14px;
+  padding-bottom:calc(78px + env(safe-area-inset-bottom));  /* clear bottom nav */
+}
+.lp-shell-loading,.lp-shell-error{
+  text-align:center;padding:48px 18px;color:var(--text-2);font-size:.86rem;
+}
+.lp-shell-error{color:var(--err)}
+
+/* ---------- bottom nav (mobile) ---------- */
+.lp-shell-bottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;
+  display:flex;background:var(--bg-2);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.lp-shell-bi{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;min-height:60px;background:none;border:none;
+  color:var(--text-2);font-size:.66rem;font-weight:600;padding:0 4px;
+}
+.lp-shell-bi.on{color:var(--brand)}
+.lp-shell-bi-icon{font-size:1.15rem;line-height:1}
+.lp-shell-bi-label{
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+
+/* ---------- sidebar ---------- */
+.lp-shell-side{
+  position:fixed;top:0;bottom:0;left:0;width:264px;z-index:90;
+  background:var(--bg-2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top);
+  transform:translateX(-100%);transition:transform .22s cubic-bezier(.32,1.14,.5,1);
+}
+.lp-shell.sidebar-open .lp-shell-side{transform:translateX(0)}
+
+.lp-shell-overlay{
+  position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.lp-shell.sidebar-open .lp-shell-overlay{opacity:1;pointer-events:auto}
+
+.lp-shell-brand{
+  font-family:var(--font-head);font-size:1.05rem;font-weight:800;color:var(--text);
+  padding:18px;border-bottom:1px solid var(--border);
+}
+.lp-shell-nav{flex:1;overflow-y:auto;padding:10px}
+.lp-shell-ni{
+  display:flex;align-items:center;gap:12px;width:100%;
+  min-height:var(--tap-nav);padding:0 14px;margin-bottom:2px;
+  background:none;border:none;border-radius:var(--radius);
+  color:var(--text-2);font-size:.88rem;font-weight:600;text-align:left;
+}
+.lp-shell-ni.on{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.lp-shell-badge{
+  margin-left:auto;background:var(--brand);color:#fff;border-radius:99px;
+  font-size:.66rem;font-weight:700;padding:2px 7px;min-width:20px;text-align:center;
+}
+
+.lp-shell-foot{
+  padding:14px;border-top:1px solid var(--border);
+  padding-bottom:calc(14px + env(safe-area-inset-bottom));
+}
+.lp-shell-user{font-size:.82rem;color:var(--text-2);margin-bottom:10px}
+.lp-shell-out{
+  width:100%;min-height:var(--tap);border-radius:var(--radius);
+  border:1px solid var(--border);background:none;color:var(--text-2);
+  font-size:.82rem;font-weight:600;
+}
+.lp-shell-out:active{border-color:var(--err);color:var(--err)}
+
+/* ---------- desktop ---------- */
+@media (min-width:768px){
+  .lp-shell{flex-direction:row}
+  .lp-shell-side{position:sticky;height:100vh;transform:none;flex-shrink:0}
+  .lp-shell-overlay{display:none}
+  .lp-shell-bottom{display:none}
+  .lp-shell-burger{display:none}
+  .lp-shell-body{padding:24px;padding-bottom:24px}
+  .lp-shell-top{padding-left:24px}
+}
+@media (min-width:1280px){
+  .lp-shell-body{padding:28px 32px}
+}

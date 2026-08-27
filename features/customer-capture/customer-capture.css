@@ -1,0 +1,25 @@
+/* Launchpad Feature — Customer capture styles. Colours from core/tokens.css. */
+
+.lp-cc-field{margin-bottom:14px}
+.lp-cc-label{display:block;font-size:.78rem;font-weight:600;color:var(--text-2);margin-bottom:6px}
+.lp-cc-input{
+  background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:0 12px;color:var(--text);
+}
+.lp-cc-input:focus{outline:none;border-color:var(--brand)}
+
+/* The whole row is the tap target — a bare 16px checkbox is unusable on a phone */
+.lp-cc-consent{
+  display:flex;align-items:flex-start;gap:12px;cursor:pointer;
+  background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;margin-top:4px;min-height:var(--tap);
+}
+.lp-cc-consent:has(.lp-cc-check:checked){border-color:var(--brand)}
+.lp-cc-check{
+  width:22px;height:22px;min-height:22px;flex-shrink:0;margin:0;
+  accent-color:var(--brand);cursor:pointer;
+}
+.lp-cc-consent-text{font-size:.82rem;color:var(--text-2);line-height:1.5}
+.lp-cc-consent:has(.lp-cc-check:checked) .lp-cc-consent-text{color:var(--text)}
+
+.lp-cc-err{display:none;color:var(--err);font-size:.8rem;margin-top:10px;line-height:1.45}
