@@ -42,10 +42,18 @@ input,select,textarea{ font-size:16px; font-family:var(--font-body); }
   font-family:var(--font-head); font-style:italic; font-weight:900;
   text-transform:uppercase; letter-spacing:-.4px;
 }
-.lp-shell-brand{ background:none; text-align:center; padding:10px; }
-.psp-logo{ display:block; width:100%; max-width:190px; height:auto; margin:0 auto; border-radius:3px; }
-.psp-topbrand{ margin-left:auto; max-width:150px; }
-@media (min-width:768px){ .psp-topbrand{ display:none; } }
+/* The logo sits in the top bar and is sized by HEIGHT, so it can never
+   blow out to its natural 420px width on a narrow screen. */
+.psp-topbrand{ margin-left:auto; display:flex; align-items:center; min-width:0; }
+.psp-logo{ display:block; height:26px; width:auto; max-width:150px; border-radius:2px; }
+.lp-shell-top{ gap:8px; }
+/* The shell prints the section name; the logo is the brand. Both is clutter
+   on a 375px bar. */
+.lp-shell-heading{ font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+
+@media (min-width:768px){
+  .psp-logo{ height:32px; max-width:220px; }
+}
 .lp-shell-bottom{ background:#0a0a0a; border-top:1px solid var(--border); }
 .lp-shell-bi{ color:var(--text-2); }
 .lp-shell-bi.on,.lp-shell-ni.on{ color:var(--brand); }

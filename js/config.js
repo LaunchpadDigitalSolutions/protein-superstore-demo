@@ -13,7 +13,7 @@ export const CONFIG = {
   liveStores: ['hartlepool'],
   brandName: 'Protein Superstore',
   clientRef: 'psp',
-  version: 'v1.1.0',
+  version: 'v1.1.1',
 
   sb: {
     url: 'https://coiwwbroycaznkmhevde.supabase.co',
