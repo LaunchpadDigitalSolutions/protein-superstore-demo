@@ -3,83 +3,196 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Protein Superstore — Store screen</title>
+<title>Protein Superstore — Staff</title>
 <meta name="theme-color" content="#E4181F">
-<link rel="stylesheet" href="./core/tokens.css?v=1.1.2">
-<link rel="stylesheet" href="./core/ui.css?v=1.1.2">
-<link rel="stylesheet" href="./features/kitchen/kitchen.css?v=1.1.2">
-<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.1.2">
-<link rel="stylesheet" href="./css/psp.css?v=1.1.2">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,700;1,900&display=swap" rel="stylesheet">
-<style>
-  .psp-staff-top{
-    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
-    padding:12px 14px; border-bottom:1px solid var(--border); background:#0a0a0a;
-  }
-  .psp-staff-title{ font-style:italic; font-weight:900; text-transform:uppercase; margin-right:auto; }
-  .psp-station{ display:none; padding:12px; }
-  .psp-station.on{ display:block; }
-  .psp-tabs{ display:flex; gap:8px; }
-  .psp-tabs button{
-    min-height:var(--tap); padding:0 16px; border-radius:999px; cursor:pointer; font-weight:700; font-size:14px;
-    background:var(--surface); border:1px solid var(--border); color:var(--text-2);
-  }
-  .psp-tabs button.on{ background:var(--brand); border-color:var(--brand); color:#fff; }
-</style>
+<link rel="stylesheet" href="./core/tokens.css?v=1.2.0">
+<link rel="stylesheet" href="./core/ui.css?v=1.2.0">
+<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.2.0">
+<link rel="stylesheet" href="./css/psp.css?v=1.2.0">
+<link rel="stylesheet" href="./css/staff.css?v=1.2.0">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="staff">
 
-<div class="psp-staff-top">
-  <div class="psp-staff-title">Protein Superstore — store screen</div>
-  <div class="psp-tabs">
-    <button id="tabBar" class="on">Slush bar</button>
-    <button id="tabCounter">Counter</button>
+<header class="st-top">
+  <img class="psp-logo" src="./assets/logo.jpg?v=1.2.0" alt="Protein Superstore">
+  <span class="st-store" id="stStore">Hartlepool</span>
+  <button class="st-bell" id="stBell" aria-label="Turn on order alerts">🔔</button>
+</header>
+
+<!-- Sign in. A demo PIN stands in for core/auth.js — see the note in app boot. -->
+<section class="st-gate" id="stGate">
+  <h1 class="st-h1">STAFF</h1>
+  <p class="st-sub">Sign in to see today's collection orders.</p>
+  <label class="st-label" for="stPin">Your PIN</label>
+  <input class="st-input" id="stPin" type="tel" inputmode="numeric" maxlength="4"
+         autocomplete="off" placeholder="••••">
+  <button class="psp-btn psp-btn-lg" id="stGo">SIGN IN</button>
+  <p class="st-hint">Demo PIN: 1234</p>
+</section>
+
+<main class="st-main" id="stMain" hidden>
+  <div class="st-bar">
+    <span id="stCount">—</span>
+    <button class="psp-link" id="stRefresh">Refresh</button>
   </div>
-</div>
-
-<section id="stationBar" class="psp-station on"></section>
-<section id="stationCounter" class="psp-station"></section>
+  <div id="stList" class="st-list"></div>
+  <div class="st-foot" id="stFoot"></div>
+</main>
 
 <script type="module">
-  /* Both boards are the Kitchen module — one watching drinks (the slush bar
-     makes them to order) and one watching everything else (counter staff
-     pick it off the shelf). Tapping Ready is what flips the customer's
-     order screen and fires their notification. */
-  import { configure } from './core/db.js?v=1.1.2';
-  import { Kitchen } from './features/kitchen/kitchen.js?v=1.1.2';
-  import { BugReport } from './features/bug-report/bug-report.js?v=1.1.2';
-  import { CONFIG } from './js/config.js?v=1.1.2';
+import { configure, db } from './core/db.js?v=1.2.0';
+import { toast } from './core/toast.js?v=1.2.0';
+import { BugReport } from './features/bug-report/bug-report.js?v=1.2.0';
+import { CONFIG } from './js/config.js?v=1.2.0';
+import { isOutstanding, work, minutesWaiting, sortForStaff, newSince,
+         summarise, readyPatch, collectedPatch } from './js/staff.js?v=1.2.0';
 
-  configure({ url: CONFIG.sb.url, key: CONFIG.sb.key });
+configure({ url: CONFIG.sb.url, key: CONFIG.sb.key });
 
-  const bar = new Kitchen({
-    mount: document.getElementById('stationBar'),
-    venue: CONFIG.venue, station: 'bar', amberMin: 3, redMin: 6
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+const seen = new Set();
+let orders = [];
+let timer = null;
+
+/* ---------- sign in ----------
+   A PIN is a demo stand-in. Production uses core/auth.js with an account per
+   staff member, because own-phone access has to be revocable when someone
+   leaves. */
+function signIn() {
+  if (el('stPin').value.trim() !== '1234') {
+    return toast('That PIN is not recognised (PSP-401)', { type: 'error' });
+  }
+  sessionStorage.setItem('psp_staff', '1');
+  el('stGate').hidden = true;
+  el('stMain').hidden = false;
+  start();
+}
+el('stGo').onclick = signIn;
+el('stPin').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+if (sessionStorage.getItem('psp_staff')) { el('stGate').hidden = true; el('stMain').hidden = false; start(); }
+
+/* ---------- alerts ----------
+   Asked for on a tap, never on load: a prompt fired on page load gets denied
+   and can never be asked again. */
+el('stBell').onclick = async () => {
+  if (typeof Notification === 'undefined') return toast('This browser cannot show alerts');
+  const r = await Notification.requestPermission();
+  toast(r === 'granted' ? 'Alerts on for this phone'
+                        : 'Alerts are blocked in your phone settings');
+  paintBell();
+};
+function paintBell() {
+  const on = typeof Notification !== 'undefined' && Notification.permission === 'granted';
+  el('stBell').classList.toggle('on', on);
+}
+paintBell();
+
+function alertStaff(o) {
+  if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+  const w = work(o);
+  const body = [w.make.length ? w.make.length + ' to make' : '',
+                w.pick.length ? w.pick.length + ' to pick' : ''].filter(Boolean).join(' · ');
+  new Notification('New order #' + o.id, { body, icon: './icon-192.png', tag: o.id });
+}
+
+/* ---------- loading ----------
+   20 seconds, and an immediate refresh whenever the phone comes back to the
+   app — which is when staff actually look. */
+function start() {
+  load();
+  clearInterval(timer);
+  timer = setInterval(load, 20000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+}
+el('stRefresh').onclick = load;
+
+async function load() {
+  try {
+    const rows = await db('GET',
+      `/rest/v1/ls_orders?venue=eq.${encodeURIComponent(CONFIG.venue)}` +
+      `&status=eq.active&select=*&order=created_at.asc&limit=50`) || [];
+    const live = sortForStaff(rows.filter(isOutstanding));
+
+    /* Notify once per order, and never on the first load after opening the
+       app — otherwise every order already on the list buzzes at once. */
+    if (seen.size) newSince(live, seen).forEach(alertStaff);
+    live.forEach(o => seen.add(o.id));
+    if (!seen.size) live.forEach(o => seen.add(o.id));
+
+    orders = live;
+    paint();
+  } catch (e) {
+    el('stFoot').textContent = 'Could not reach the store (PSP-402). Retrying.';
+  }
+}
+
+function paint() {
+  el('stCount').textContent = orders.length
+    ? orders.length + (orders.length === 1 ? ' order waiting' : ' orders waiting')
+    : 'Nothing waiting';
+
+  el('stList').innerHTML = orders.map(o => {
+    const w = work(o);
+    const mins = minutesWaiting(o);
+    return `
+      <article class="st-card">
+        <header class="st-card-top">
+          <div>
+            <div class="st-ref">#${esc(o.id)}</div>
+            <div class="st-meta">${esc(summarise(o))} · waiting ${mins} min</div>
+          </div>
+        </header>
+        ${w.make.length ? group('MAKE', w.make, 'make') : ''}
+        ${w.pick.length ? group('PICK', w.pick, 'pick') : ''}
+        <button class="psp-btn psp-btn-lg" data-ready="${esc(o.id)}">READY TO COLLECT</button>
+      </article>`;
+  }).join('') || `<div class="st-empty">All caught up.</div>`;
+
+  el('stFoot').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB',
+    { hour: '2-digit', minute: '2-digit' });
+
+  el('stList').querySelectorAll('[data-ready]').forEach(b => {
+    b.onclick = () => markReady(b.dataset.ready, b);
   });
-  const counter = new Kitchen({
-    mount: document.getElementById('stationCounter'),
-    venue: CONFIG.venue, station: 'kitchen', amberMin: 5, redMin: 10
-  });
-  bar.start();
-  counter.start();
+}
 
-  const tabs = [
-    [document.getElementById('tabBar'), document.getElementById('stationBar')],
-    [document.getElementById('tabCounter'), document.getElementById('stationCounter')]
-  ];
-  tabs.forEach(([btn]) => btn.addEventListener('click', () => {
-    tabs.forEach(([b, s]) => {
-      const on = b === btn;
-      b.classList.toggle('on', on);
-      s.classList.toggle('on', on);
-    });
-  }));
+function group(label, items, cls) {
+  return `
+    <div class="st-group ${cls}">
+      <div class="st-group-label">${label}</div>
+      <ul class="st-items">
+        ${items.map(i => `<li><strong>${i.q}×</strong> ${esc(i.n)}</li>`).join('')}
+      </ul>
+    </div>`;
+}
 
-  new BugReport({
-    clientRef: CONFIG.clientRef,
-    getUser: () => ({ email: null, role: 'staff' }),
-    getView: () => 'store-screen'
-  }).mount(document.body);
+async function markReady(id, btn) {
+  const order = orders.find(o => o.id === id);
+  if (!order) return;
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  try {
+    await db('PATCH', `/rest/v1/ls_orders?id=eq.${encodeURIComponent(id)}`, readyPatch(order));
+    toast('Customer told #' + id + ' is ready', { type: 'success' });
+    await load();
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Try again';
+    toast('Could not update that order (PSP-403)', { type: 'error' });
+  }
+}
+
+new BugReport({
+  clientRef: CONFIG.clientRef,
+  getUser: () => ({ email: null, role: 'staff' }),
+  getView: () => 'staff'
+}).mount(document.body);
+
+el('stStore').textContent = CONFIG.stores.find(s => s.id === CONFIG.liveStores[0])?.name || '';
 </script>
 </body>
 </html>

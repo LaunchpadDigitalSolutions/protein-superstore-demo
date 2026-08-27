@@ -9,7 +9,6 @@ export const ctx = {
   cart: null,      /* Cart module      */
   loyalty: null,   /* Loyalty module   */
   notify: null,    /* OrderReady       */
-  wait: null,      /* WaitTimes        */
   shell: null,     /* Shell            */
   pwa: null        /* PWA              */
 };
@@ -73,12 +72,12 @@ export function ago(iso) {
 
 export function slushPhoto(flavour, cls = '') {
   const filter = CONFIG.slushFilters[flavour] || 'none';
-  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.1.2" alt="${esc(flavour || 'Protein slush')}"
+  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.2.0" alt="${esc(flavour || 'Protein slush')}"
                style="filter:${filter}" loading="lazy">`;
 }
 
 export function slushPair() {
-  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.1.2"
+  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.2.0"
                alt="Protein slush, blue raspberry and cherry" loading="lazy">`;
 }
 

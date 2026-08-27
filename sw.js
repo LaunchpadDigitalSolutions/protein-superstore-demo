@@ -26,23 +26,24 @@
 
 const CONFIG = {
   /* Bump this on every deploy. It's what triggers the update. */
-  version: 'v1.1.2',
+  version: 'v1.2.0',
   appName: 'protein-superstore',
 
   /* Cached on install — the app must open with these alone. */
   shell: [
     './',
     './index.html',
-    './css/psp.css?v=1.1.2',
-    './css/psp-screens.css?v=1.1.2',
-    './core/tokens.css?v=1.1.2',
-    './core/ui.css?v=1.1.2',
+    './css/psp.css?v=1.2.0',
+    './css/staff.css?v=1.2.0',
+    './css/psp-screens.css?v=1.2.0',
+    './core/tokens.css?v=1.2.0',
+    './core/ui.css?v=1.2.0',
     './icon-192.png',
     './icon-512.png',
-    './assets/logo.jpg?v=1.1.2',
-    './assets/hero.jpg?v=1.1.2',
-    './assets/slush-hero.jpg?v=1.1.2',
-    './assets/slush-pair.jpg?v=1.1.2'
+    './assets/logo.jpg?v=1.2.0',
+    './assets/hero.jpg?v=1.2.0',
+    './assets/slush-hero.jpg?v=1.2.0',
+    './assets/slush-pair.jpg?v=1.2.0'
   ],
 
   /* Network first, cache as a fallback. */
