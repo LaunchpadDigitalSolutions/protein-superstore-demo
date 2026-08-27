@@ -159,6 +159,10 @@
   background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:15px;
 }
 .psp-store.on{ border-color:var(--brand); }
+.psp-store.locked{ opacity:.45; }
+.psp-soon{ font-size:10px; font-weight:800; letter-spacing:.5px; text-transform:uppercase;
+  background:var(--bg-2); border:1px solid var(--border); color:var(--text-2);
+  padding:2px 6px; border-radius:4px; margin-left:6px; }
 .psp-store-name{ font-weight:800; }
 .psp-store-addr,.psp-store-hours{ font-size:12px; color:var(--text-2); }
 .psp-tick{ color:var(--brand); font-size:18px; opacity:0; }

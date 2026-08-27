@@ -128,15 +128,19 @@ export function accountHtml() {
 
     <h2 class="psp-h2">YOUR STORE</h2>
     <div class="psp-stores">
-      ${CONFIG.stores.map(s => `
-        <button class="psp-store${s.id === store.id ? ' on' : ''}" data-psp="store" data-id="${esc(s.id)}">
+      ${CONFIG.stores.map(s => {
+        const live = CONFIG.liveStores.includes(s.id);
+        return `
+        <button class="psp-store${s.id === store.id ? ' on' : ''}${live ? '' : ' locked'}"
+                data-psp="${live ? 'store' : 'locked'}" data-id="${esc(s.id)}">
           <div>
-            <div class="psp-store-name">${esc(s.name)}</div>
+            <div class="psp-store-name">${esc(s.name)}${live ? '' : ' <span class="psp-soon">Coming soon</span>'}</div>
             <div class="psp-store-addr">${esc(s.address)}</div>
-            <div class="psp-store-hours">${esc(s.hours)}</div>
+            <div class="psp-store-hours">${live ? esc(s.hours) : 'Not taking app orders yet'}</div>
           </div>
           <span class="psp-tick" aria-hidden="true">✓</span>
-        </button>`).join('')}
+        </button>`;
+      }).join('')}
     </div>
 
     <h2 class="psp-h2 psp-mt">APP</h2>

@@ -6,7 +6,11 @@
    service key ever goes in front-end code. */
 
 export const CONFIG = {
-  venue: 'protein-superstore',
+  /* One venue key per store. Each store gets its own menu, its own order
+     board and its own numbers — which is what an extra store is actually
+     buying. Adding one is a config change, not a build. */
+  venue: 'psp-hartlepool',
+  liveStores: ['hartlepool'],
   brandName: 'Protein Superstore',
   clientRef: 'psp',
   version: 'v1.0.0',
