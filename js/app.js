@@ -166,6 +166,10 @@ function onClick(e) {
     return toast('Collecting from ' + esc(t.textContent.trim().split('\n')[0]));
   }
 
+  if (kind === 'locked') {
+    return toast('This store is not on the app yet — ask in store', { duration: 4000 });
+  }
+
   if (['install', 'notify', 'reset'].includes(kind)) return accountAction(kind);
 }
 

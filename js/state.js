@@ -17,8 +17,9 @@ export const ctx = {
 /* ---------- chosen store ---------- */
 
 export function currentStore() {
-  const id = localStorage.getItem(STORE_KEY) || 'hartlepool';
-  return CONFIG.stores.find(s => s.id === id) || CONFIG.stores[0];
+  const id = localStorage.getItem(STORE_KEY) || CONFIG.liveStores[0];
+  const live = CONFIG.stores.filter(s => CONFIG.liveStores.includes(s.id));
+  return live.find(s => s.id === id) || live[0];
 }
 
 export function setStore(id) {

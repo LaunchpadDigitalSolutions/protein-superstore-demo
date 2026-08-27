@@ -44,7 +44,7 @@ const { Menu } = await import('./features/menu/menu.js');
 const { Cart } = await import('./features/cart/cart.js');
 const { Loyalty } = await import('./features/loyalty/loyalty.js');
 
-const menu = new Menu({ venue: 'protein-superstore', db, includeUnavailable: false });
+const menu = new Menu({ venue: 'psp-hartlepool', db, includeUnavailable: false });
 await menu.load();
 
 console.log('\nMenu\n');
@@ -63,8 +63,8 @@ check('a missing required choice is caught', menu.missingChoices(slush, { 'Choos
 check('an optional choice is not required', menu.missingChoices(slush, { 'Choose flavour': 'Cherry Burst', 'Select size': 'Large' }).length === 0);
 
 console.log('\nBasket\n');
-const loyalty = new Loyalty({ mount: document.createElement('div'), venue: 'protein-superstore', db, brandName: 'Protein Superstore' });
-const cart = new Cart({ mount: document.createElement('div'), menu, venue: 'protein-superstore', db,
+const loyalty = new Loyalty({ mount: document.createElement('div'), venue: 'psp-hartlepool', db, brandName: 'Protein Superstore' });
+const cart = new Cart({ mount: document.createElement('div'), menu, venue: 'psp-hartlepool', db,
   orderType: 'collection', pointsPerPound: 10, loyalty, persist: false });
 
 cart.add('i1', { selections: { 'Choose flavour': 'Cherry Burst', 'Select size': 'Large' } });
@@ -86,7 +86,7 @@ const order = await cart.placeOrder({ email: 'lewis@lasmedia.co.uk', name: 'Lewi
   phone: '07700 900123', marketingOptIn: true, tableNumber: 'Hartlepool' });
 const posted = written.find(w => w.path.includes('ls_orders'))?.body;
 check('an order reaches ls_orders', !!posted);
-check('under the right venue', posted.venue === 'protein-superstore');
+check('under the right venue', posted.venue === 'psp-hartlepool');
 check('collection store is recorded', posted.table_num === 'Hartlepool');
 check('slushes are routed to the bar screen', posted.drink_items.length === 2);
 check('the bar has something to make', posted.drink_status === 'active');
