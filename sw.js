@@ -31,14 +31,14 @@ const CONFIG = {
 
   /* Cached on install — the app must open with these alone. */
   shell: [
-    '/',
-    '/index.html',
-    '/css/psp.css',
-    '/css/psp-screens.css',
-    '/core/tokens.css',
-    '/core/ui.css',
-    '/icon-192.png',
-    '/icon-512.png'
+    './',
+    './index.html',
+    './css/psp.css',
+    './css/psp-screens.css',
+    './core/tokens.css',
+    './core/ui.css',
+    './icon-192.png',
+    './icon-512.png'
   ],
 
   /* Network first, cache as a fallback. */
@@ -106,7 +106,7 @@ self.addEventListener('fetch', event => {
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req).catch(() =>
-        caches.match('/index.html').then(r => r || caches.match('/')))
+        caches.match('./index.html').then(r => r || caches.match('./')))
     );
     return;
   }
@@ -166,8 +166,8 @@ self.addEventListener('push', event => {
   event.waitUntil(
     self.registration.showNotification(title, {
       body: data.body || 'Update on your order',
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
+      icon: './icon-192.png',
+      badge: './icon-192.png',
       tag: data.tag || 'order',
       requireInteraction: true
     })

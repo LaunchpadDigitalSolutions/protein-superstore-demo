@@ -72,12 +72,12 @@ async function boot() {
     onError: m => console.error(m)
   });
 
-  ctx.notify = new OrderReady({ venue: CONFIG.venue, icon: '/icon-192.png' });
+  ctx.notify = new OrderReady({ venue: CONFIG.venue, icon: './icon-192.png' });
   ctx.notify.resume();                         /* keep watching after a reload */
 
   ctx.wait = new WaitTimes({ venue: CONFIG.venue });
 
-  ctx.pwa = new PWA({ swPath: '/sw.js' });
+  ctx.pwa = new PWA({ swPath: './sw.js', scope: './' });
   ctx.pwa.register();
   ctx.pwa.onUpdateAvailable(() => toast('New version available', {
     duration: 8000, action: { label: 'Reload', onClick: () => ctx.pwa.applyUpdate() }

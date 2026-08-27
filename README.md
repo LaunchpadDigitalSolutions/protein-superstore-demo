@@ -4,8 +4,7 @@ A pitch demo for Protein Superstore (5 stores: Hartlepool, Sunderland, Newcastle
 Middlesbrough, Stockton). Built by Launchpad Digital Solutions.
 
 **Live:** psp.launchpadclient.app
-**Spec:** `Jscott235/ai-brain` → `Projects/specs/2026-08-27-protein-superstore.md`
-**Pricing:** £139/mo first store, £79/mo per additional store
+**Spec:** internal vault (`Projects/specs/2026-08-27-protein-superstore.md`)
 **Store screen:** psp.launchpadclient.app/staff.html
 
 ---
@@ -52,9 +51,8 @@ Update a module upstream, copy it back in — no rewrite.
 Supabase `coiwwbroycaznkmhevde`, venue key `psp-hartlepool`.
 
 **One venue key per store.** Each store has its own menu, its own order board and
-its own numbers, so adding a store is a config change rather than a build — which
-is what the £79/month per extra store is selling. Hartlepool is the only live
-store; the other four render as "Coming soon" in the app.
+its own numbers, so adding a store is a config change rather than a build.
+Hartlepool is the only live store; the other four render as "Coming soon".
 Tables: `ls_menu_categories`, `ls_menu_items`, `ls_orders`, `ls_customers`,
 `ls_loyalty`, `ls_loyalty_log`, `bug_reports`.
 

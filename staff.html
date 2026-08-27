@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Protein Superstore — Store screen</title>
 <meta name="theme-color" content="#E4181F">
-<link rel="stylesheet" href="/core/tokens.css">
-<link rel="stylesheet" href="/core/ui.css">
-<link rel="stylesheet" href="/features/kitchen/kitchen.css">
-<link rel="stylesheet" href="/features/bug-report/bug-report.css">
-<link rel="stylesheet" href="/css/psp.css">
+<link rel="stylesheet" href="./core/tokens.css">
+<link rel="stylesheet" href="./core/ui.css">
+<link rel="stylesheet" href="./features/kitchen/kitchen.css">
+<link rel="stylesheet" href="./features/bug-report/bug-report.css">
+<link rel="stylesheet" href="./css/psp.css">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,700;1,900&display=swap" rel="stylesheet">
 <style>
   .psp-staff-top{
@@ -45,10 +45,10 @@
      makes them to order) and one watching everything else (counter staff
      pick it off the shelf). Tapping Ready is what flips the customer's
      order screen and fires their notification. */
-  import { configure } from '/core/db.js';
-  import { Kitchen } from '/features/kitchen/kitchen.js';
-  import { BugReport } from '/features/bug-report/bug-report.js';
-  import { CONFIG } from '/js/config.js';
+  import { configure } from './core/db.js';
+  import { Kitchen } from './features/kitchen/kitchen.js';
+  import { BugReport } from './features/bug-report/bug-report.js';
+  import { CONFIG } from './js/config.js';
 
   configure({ url: CONFIG.sb.url, key: CONFIG.sb.key });
 

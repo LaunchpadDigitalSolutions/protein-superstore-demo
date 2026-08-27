@@ -147,7 +147,7 @@ export function accountHtml() {
     <div class="psp-rows">
       <button class="psp-row" data-psp="install">Add to home screen<span class="psp-chev">›</span></button>
       <button class="psp-row" data-psp="notify">Turn on order notifications<span class="psp-chev">›</span></button>
-      <a class="psp-row" href="/staff.html">Staff: slush bar screen<span class="psp-chev">›</span></a>
+      <a class="psp-row" href="./staff.html">Staff: slush bar screen<span class="psp-chev">›</span></a>
       <button class="psp-row" data-psp="reset">Reset demo data<span class="psp-chev">›</span></button>
     </div>
 

@@ -43,9 +43,14 @@ const TEST_CARD = '4242424242424242';
 
 /* Domains where demo mode is allowed to run. Anything else and it refuses,
    so a demo can't be quietly deployed as a client's real checkout. */
+/* Hosts where a demo checkout may run. All of these are ours or a preview
+   host — none of them is somewhere a client's real checkout would live, which
+   is the point: the guard exists so a demo can't be quietly deployed as
+   somebody's real payment page. github.io is here because a free-plan repo
+   preview is sometimes the only URL available before a Pages deploy. */
 const DEMO_HOSTS = [
   'localhost', '127.0.0.1',
-  'launchpadclient.app', 'pages.dev', 'launchpadme.co.uk'
+  'launchpadclient.app', 'pages.dev', 'launchpadme.co.uk', 'github.io'
 ];
 
 export class Payment {
