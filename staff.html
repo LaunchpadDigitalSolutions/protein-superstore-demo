@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Protein Superstore — Staff</title>
 <meta name="theme-color" content="#E4181F">
-<link rel="stylesheet" href="./core/tokens.css?v=1.3.0">
-<link rel="stylesheet" href="./core/ui.css?v=1.3.0">
-<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.3.0">
-<link rel="stylesheet" href="./css/psp.css?v=1.3.0">
-<link rel="stylesheet" href="./css/staff.css?v=1.3.0">
+<link rel="stylesheet" href="./core/tokens.css?v=1.3.1">
+<link rel="stylesheet" href="./core/ui.css?v=1.3.1">
+<link rel="stylesheet" href="./features/bug-report/bug-report.css?v=1.3.1">
+<link rel="stylesheet" href="./css/psp.css?v=1.3.1">
+<link rel="stylesheet" href="./css/staff.css?v=1.3.1">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body class="staff">
 
 <header class="st-top">
-  <img class="psp-logo" src="./assets/logo.jpg?v=1.3.0" alt="Protein Superstore">
+  <img class="psp-logo" src="./assets/logo.jpg?v=1.3.1" alt="Protein Superstore">
   <span class="st-store" id="stStore">Hartlepool</span>
   <button class="st-bell" id="stBell" aria-label="Turn on order alerts">🔔</button>
 </header>
@@ -41,13 +41,13 @@
 </main>
 
 <script type="module">
-import { configure, db } from './core/db.js?v=1.3.0';
-import { toast } from './core/toast.js?v=1.3.0';
-import { BugReport } from './features/bug-report/bug-report.js?v=1.3.0';
-import { CONFIG } from './js/config.js?v=1.3.0';
-import { Loyalty } from './features/loyalty/loyalty.js?v=1.3.0';
+import { configure, db } from './core/db.js?v=1.3.1';
+import { toast } from './core/toast.js?v=1.3.1';
+import { BugReport } from './features/bug-report/bug-report.js?v=1.3.1';
+import { CONFIG } from './js/config.js?v=1.3.1';
+import { Loyalty } from './features/loyalty/loyalty.js?v=1.3.1';
 import { work, minutesWaiting, newSince, summarise, readyPatch, collectedPatch,
-         forStaff, isUnpaid, amountDue, pointsOnCollection } from './js/staff.js?v=1.3.0';
+         forStaff, isUnpaid, amountDue, pointsOnCollection } from './js/staff.js?v=1.3.1';
 
 const loyalty = new Loyalty({ mount: document.createElement('div'),
   venue: CONFIG.venue, brandName: CONFIG.brandName });

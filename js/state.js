@@ -72,12 +72,12 @@ export function ago(iso) {
 
 export function slushPhoto(flavour, cls = '') {
   const filter = CONFIG.slushFilters[flavour] || 'none';
-  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.3.0" alt="${esc(flavour || 'Protein slush')}"
+  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.3.1" alt="${esc(flavour || 'Protein slush')}"
                style="filter:${filter}" loading="lazy">`;
 }
 
 export function slushPair() {
-  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.3.0"
+  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.3.1"
                alt="Protein slush, blue raspberry and cherry" loading="lazy">`;
 }
 

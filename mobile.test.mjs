@@ -44,7 +44,9 @@ check('44px+ tap targets used throughout', taps >= 8, taps+' found');
    grid wider than the screen and makes a phone open the page zoomed out. */
 const bareFr = (css.match(/grid-template-columns:\s*repeat\(\d+,\s*1fr\)/g)||[]);
 check('no grid column that can refuse to shrink', bareFr.length === 0, bareFr.join(' '));
-check('html holds the overflow line, not just body', /html\{[^}]*overflow-x:hidden/.test(css.replace(/\s+/g,'')));
+check('html holds the overflow line, not just body', /html\{[^}]*overflow-x:clip/.test(css.replace(/\s+/g,'')));
+check('uses clip, not hidden — hidden breaks iOS scrolling',
+  !/(?:html|body)\{[^}]*overflow-x:hidden/.test(css.replace(/\s+/g,'')));
 check('tiles can shrink', /\.psp-tile\{[^}]*min-width:0/.test(css.replace(/\s+/g,'')));
 
 console.log('\nCache busting\n');
