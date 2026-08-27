@@ -42,10 +42,10 @@ input,select,textarea{ font-size:16px; font-family:var(--font-body); }
   font-family:var(--font-head); font-style:italic; font-weight:900;
   text-transform:uppercase; letter-spacing:-.4px;
 }
-.lp-shell-brand{
-  font-style:italic; font-weight:900; color:#fff; background:var(--brand);
-  transform:skewX(-8deg); text-align:center;
-}
+.lp-shell-brand{ background:none; text-align:center; padding:10px; }
+.psp-logo{ display:block; width:100%; max-width:190px; height:auto; margin:0 auto; border-radius:3px; }
+.psp-topbrand{ margin-left:auto; max-width:150px; }
+@media (min-width:768px){ .psp-topbrand{ display:none; } }
 .lp-shell-bottom{ background:#0a0a0a; border-top:1px solid var(--border); }
 .lp-shell-bi{ color:var(--text-2); }
 .lp-shell-bi.on,.lp-shell-ni.on{ color:var(--brand); }
@@ -76,9 +76,8 @@ input,select,textarea{ font-size:16px; font-family:var(--font-body); }
 }
 .psp-chev{ color:var(--text-2); font-size:22px; line-height:1; }
 
-/* ---------- product artwork ---------- */
-.psp-cup{ display:block; margin:0 auto; filter:drop-shadow(0 10px 18px rgba(0,0,0,.7)); }
-.psp-tub{ width:82px; height:82px; display:block; margin:0 auto; }
+/* ---------- imagery ---------- */
+img{ max-width:100%; }
 
 /* ---------- module chrome in brand colours ---------- */
 .lp-ly-card,.lp-ly-look{ background:var(--surface); border:1px solid var(--border); }

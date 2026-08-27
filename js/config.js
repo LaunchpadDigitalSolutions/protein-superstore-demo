@@ -13,7 +13,7 @@ export const CONFIG = {
   liveStores: ['hartlepool'],
   brandName: 'Protein Superstore',
   clientRef: 'psp',
-  version: 'v1.0.0',
+  version: 'v1.1.0',
 
   sb: {
     url: 'https://coiwwbroycaznkmhevde.supabase.co',
@@ -51,12 +51,21 @@ export const CONFIG = {
       phone: '', hours: 'Mon–Sat 10:00–17:30 · Sun 11:00–16:00' }
   ],
 
-  /* Flavour → slush colour, used by the cup graphic. */
-  slushColours: {
-    'Blue Raspberry':        ['#3AA0FF', '#0B4DA2'],
-    'Cherry Burst':          ['#FF4D4D', '#9B0F17'],
-    'Strawberry Watermelon': ['#FF6E8A', '#A8123C'],
-    'Tropical Punch':        ['#FFB03A', '#D2560E']
+  /* The slush photograph is the blue one from the mockup. Picking another
+     flavour tints it rather than swapping in a drawing — one asset, four
+     flavours, and it still looks like a photo. */
+  slushFilters: {
+    'Blue Raspberry':        'none',
+    'Cherry Burst':          'hue-rotate(190deg) saturate(1.5)',
+    'Strawberry Watermelon': 'hue-rotate(150deg) saturate(1.25) brightness(1.05)',
+    'Tropical Punch':        'hue-rotate(115deg) saturate(1.6) brightness(1.08)'
+  },
+
+  /* Product photography from the client's own Shopify CDN. Anything not
+     listed falls back to a typographic tile rather than a fake product shot. */
+  productImages: {
+    "M&M's Protein Bar":
+      'https://proteinsuperstore.co.uk/cdn/shop/products/m_m-protein-bar-chocolate_600x.jpg?v=1672494867'
   }
 };
 

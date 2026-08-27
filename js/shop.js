@@ -11,12 +11,14 @@ import { toast } from '../core/toast.js';
 import { CustomerCapture } from '../features/customer-capture/customer-capture.js';
 import { Payment } from '../features/payment/payment.js';
 import { CONFIG } from './config.js';
-import { ctx, currentStore, currentUser, money, esc, slushCup, tubArt } from './state.js';
+import { ctx, currentStore, currentUser, money, esc, slushPhoto, productImage } from './state.js';
 
 const isSlush = item => /slush|shake|float/i.test(item.name);
 
 export function productArt(item, flavour) {
-  return isSlush(item) ? slushCup(flavour || firstFlavour(item), 150) : tubArt(item.name);
+  return isSlush(item)
+    ? slushPhoto(flavour || firstFlavour(item), 'sm')
+    : productImage(item);
 }
 
 function firstFlavour(item) {
@@ -70,7 +72,9 @@ export function openProduct(itemId) {
   const draw = () => {
     const flavour = selections[Object.keys(selections).find(k => /flavour/i.test(k)) || ''] || null;
     wrap.innerHTML = `
-      <div class="psp-sheet-art">${productArt(item, flavour)}</div>
+      <div class="psp-sheet-art">${isSlush(item)
+        ? slushPhoto(flavour, 'lg')
+        : productImage(item)}</div>
       <div class="psp-sheet-desc">${esc(item.description)}</div>
       ${(item.choices || []).map(groupHtml).join('')}
       <div class="psp-sheet-total">

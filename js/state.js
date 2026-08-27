@@ -66,43 +66,43 @@ export function ago(iso) {
 }
 
 /* ---------- artwork ----------
-   No product photography in a demo, so the slush cup is drawn. It takes the
-   flavour colours from config so picking a flavour changes the cup. */
+   The slush is the photograph from the mockup, tinted per flavour. Products
+   use the client's own Shopify photography where we have it, and a
+   typographic tile where we don't — a real photo or honest type, never a
+   drawing pretending to be a product shot. */
 
-export function slushCup(flavour, size = 190) {
-  const [light, dark] = CONFIG.slushColours[flavour] || CONFIG.slushColours['Blue Raspberry'];
-  const uid = 'g' + Math.random().toString(36).slice(2, 8);
-  return `
-  <svg class="psp-cup" viewBox="0 0 120 170" width="${size}" height="${Math.round(size * 1.42)}"
-       role="img" aria-label="${esc(flavour || 'Protein slush')}">
-    <defs>
-      <linearGradient id="${uid}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${light}"/><stop offset="100%" stop-color="${dark}"/>
-      </linearGradient>
-    </defs>
-    <rect x="55" y="4" width="7" height="52" rx="3.5" fill="#d8d8d8" transform="rotate(12 58 30)"/>
-    <path d="M22 40 h76 l-7 22 H29 Z" fill="${light}" opacity=".35"/>
-    <ellipse cx="60" cy="40" rx="38" ry="9" fill="#efefef"/>
-    <path d="M27 58 h66 l-9 100 a10 10 0 0 1 -10 8 H46 a10 10 0 0 1 -10 -8 Z" fill="url(#${uid})"/>
-    <path d="M27 58 h66 l-2 22 H29 Z" fill="#fff" opacity=".18"/>
-    <rect x="30" y="92" width="60" height="26" rx="4" fill="#111"/>
-    <text x="60" y="106" text-anchor="middle" font-family="Archivo, sans-serif"
-          font-style="italic" font-weight="900" font-size="11" fill="#fff">PROTEIN</text>
-    <text x="60" y="115" text-anchor="middle" font-family="Archivo, sans-serif"
-          font-weight="700" font-size="6" fill="#E4181F" letter-spacing="1">SUPERSTORE</text>
-  </svg>`;
+export function slushPhoto(flavour, cls = '') {
+  const filter = CONFIG.slushFilters[flavour] || 'none';
+  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg" alt="${esc(flavour || 'Protein slush')}"
+               style="filter:${filter}" loading="lazy">`;
 }
 
-/* Tub artwork for supplements — brand initial on a plinth. */
-export function tubArt(name) {
-  const initial = esc((name || '?').replace(/^[^A-Za-z]*/, '').charAt(0).toUpperCase());
+export function slushPair() {
+  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg"
+               alt="Protein slush, blue raspberry and cherry" loading="lazy">`;
+}
+
+/* A product tile. Real photo if the client's CDN has one, otherwise type. */
+export function productImage(item) {
+  const url = CONFIG.productImages[item.name];
+  if (url) {
+    return `<img class="psp-photo" src="${esc(url)}" alt="${esc(item.name)}" loading="lazy">`;
+  }
+  return typeTile(item.name);
+}
+
+/* Brand and product name set on black with the house slash. Deliberately
+   typographic — it reads as a design choice, not a bad illustration. */
+function typeTile(name) {
+  const parts = String(name).split(' ');
+  const brand = /^5%/.test(name) ? '5% NUTRITION'
+              : /sneak/i.test(name) ? 'SNEAK'
+              : /snickers|mars|m&m/i.test(name) ? 'MARS'
+              : (parts[0] || '').toUpperCase();
+  const rest = String(name).replace(/^5% Nutrition |^Sneak /i, '');
   return `
-  <svg class="psp-tub" viewBox="0 0 120 120" role="img" aria-label="${esc(name)}">
-    <ellipse cx="60" cy="108" rx="34" ry="6" fill="#000" opacity=".55"/>
-    <rect x="30" y="26" width="60" height="78" rx="8" fill="#1b1b1b" stroke="#2f2f2f"/>
-    <rect x="30" y="26" width="60" height="14" rx="7" fill="#2a2a2a"/>
-    <rect x="34" y="52" width="52" height="30" rx="4" fill="#E4181F"/>
-    <text x="60" y="75" text-anchor="middle" font-family="Archivo, sans-serif"
-          font-style="italic" font-weight="900" font-size="22" fill="#fff">${initial}</text>
-  </svg>`;
+    <div class="psp-typetile" aria-label="${esc(name)}">
+      <span class="psp-typetile-brand">${esc(brand)}</span>
+      <span class="psp-typetile-name">${esc(rest)}</span>
+    </div>`;
 }
