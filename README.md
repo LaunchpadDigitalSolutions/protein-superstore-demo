@@ -5,7 +5,7 @@ Middlesbrough, Stockton). Built by Launchpad Digital Solutions.
 
 **Live:** psp.launchpadclient.app
 **Spec:** internal vault (`Projects/specs/2026-08-27-protein-superstore.md`)
-**Store screen:** psp.launchpadclient.app/staff.html
+**Staff view:** psp.launchpadclient.app/staff.html (demo PIN 1234)
 
 ---
 
@@ -15,9 +15,9 @@ Middlesbrough, Stockton). Built by Launchpad Digital Solutions.
 pay, watch the order status, collect. Points accrue on every order and can be
 redeemed against rewards. Installs to the home screen and keeps working offline.
 
-**Store** — two boards on one screen. The slush bar sees drinks to make, the
-counter sees stock to pick. Tapping Ready flips the customer's screen and fires
-their notification.
+**Staff** — on their own phone, not a mounted tablet. Sign in, see what's
+waiting oldest first, what to make and what to pick, tap Ready. That flips the
+customer's screen and fires their alert.
 
 ---
 
@@ -36,8 +36,6 @@ This repo holds the Protein Superstore skin and about 700 lines of wiring.
 | `customer-capture` | Details and marketing consent (GDPR) |
 | `payment` | Card step — demo mode, nothing transmitted |
 | `order-ready` | "Your order is ready" alert, survives a reload |
-| `wait-times` | Live collection wait, measured from real orders |
-| `kitchen` | The two store boards |
 | `shell` | Bottom nav on mobile, sidebar on desktop |
 | `bug-report` | Floating report button |
 | `pwa` | Install to home screen, offline, update prompt |
@@ -61,6 +59,18 @@ taken from proteinsuperstore.co.uk.
 
 ---
 
+## The staff view is not a library module yet
+
+`js/staff.js` plus `staff.html` are client-specific for now. The `kitchen`
+module was tried here first and removed: it assumes a mounted tablet on mains
+power, polling every 4 seconds with sound and colour-coded timers. On a phone
+that drains the battery and stops the moment the screen locks.
+
+If this shape works for Protein Superstore it belongs in `launchpad-features`,
+because every collection client will need it.
+
+---
+
 ## Before this becomes a real build
 
 1. **Payment is demo mode.** Only 4242 4242 4242 4242 is accepted and nothing is
@@ -72,8 +82,14 @@ taken from proteinsuperstore.co.uk.
    replace it.
 4. **Stock is not real.** Sold-out flags are manual until it talks to their Shopify
    catalogue.
-5. **Sign-in is stubbed** to Lewis in `js/state.js`. A real build swaps in `core/auth.js` —
-   same shape, same call sites.
+5. **Sign-in is stubbed** — Lewis on the customer side, a shared PIN on the staff
+   side. A real build swaps in `core/auth.js` with an account per staff member,
+   because own-phone access has to be revocable when somebody leaves.
+6. **Alerts only fire while the staff view is open.** Real push to a closed app
+   needs VAPID keys, a subscription per phone and a Worker to send. Roughly a
+   day. Do not claim it in a pitch until it exists.
+7. **Collection only.** Delivery is an open question for the client, not a
+   toggle — it needs address capture, a fee, a radius and a dispatch state.
 
 ---
 

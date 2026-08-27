@@ -12,7 +12,6 @@
      customer-capture details and marketing consent
      payment          card step (demo mode — nothing is transmitted)
      order-ready      "your order is ready" alert
-     wait-times       live collection wait, measured
      shell            bottom nav on mobile, sidebar on desktop
      bug-report       floating report button
      pwa              install to home screen, offline
@@ -24,14 +23,13 @@ import { Menu } from '../features/menu/menu.js';
 import { Cart } from '../features/cart/cart.js';
 import { Loyalty } from '../features/loyalty/loyalty.js';
 import { OrderReady } from '../features/order-ready/order-ready.js';
-import { WaitTimes } from '../features/wait-times/wait-times.js';
 import { Shell } from '../features/shell/shell.js';
 import { BugReport } from '../features/bug-report/bug-report.js';
 import { PWA } from '../features/pwa/pwa.js';
 
 import { CONFIG } from './config.js';
 import { ctx, currentUser, setStore, esc } from './state.js';
-import { homeHtml, mountWait } from './home.js';
+import { homeHtml } from './home.js';
 import { shopHtml, openProduct, openCheckout } from './shop.js';
 import { ordersHtml, accountHtml, accountAction, reorder } from './orders.js';
 import { openSpin, openOffers } from './extras.js';
@@ -74,8 +72,6 @@ async function boot() {
 
   ctx.notify = new OrderReady({ venue: CONFIG.venue, icon: './icon-192.png' });
   ctx.notify.resume();                         /* keep watching after a reload */
-
-  ctx.wait = new WaitTimes({ venue: CONFIG.venue });
 
   ctx.pwa = new PWA({ swPath: './sw.js', scope: './' });
   ctx.pwa.register();
@@ -142,13 +138,12 @@ function brandTheHeader() {
   if (!top || top.querySelector('.psp-logo')) return;
   const el = document.createElement('div');
   el.className = 'psp-topbrand';
-  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.1.2" alt="Protein Superstore">';
+  el.innerHTML = '<img class="psp-logo" src="./assets/logo.jpg?v=1.2.0" alt="Protein Superstore">';
   top.appendChild(el);
 }
 
 /* Things that have to happen once a section's HTML is in the DOM. */
 function afterRender(id) {
-  if (id === 'home') mountWait();
   if (id === 'loyalty') {
     const el = document.getElementById('psp-loyalty');
     if (!el) return;

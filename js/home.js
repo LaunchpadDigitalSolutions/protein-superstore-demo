@@ -1,9 +1,8 @@
 /* Home screen — Lewis's mockup, screen one.
 
    The points figure comes from the Loyalty module (ls_loyalty), the slush
-   promo and popular products come from the Menu module, and the wait time
-   is measured by the WaitTimes module from real order timings. Nothing on
-   this screen is a hardcoded number. */
+   promo and popular products come from the Menu module. Nothing on this
+   screen is a hardcoded number. */
 
 import { CONFIG } from './config.js';
 import { ctx, currentStore, currentUser, money, esc, points, slushPair } from './state.js';
@@ -38,7 +37,7 @@ export async function homeHtml() {
     </div>
 
     <section class="psp-hero" data-psp="go" data-to="shop">
-      <img class="psp-hero-img" src="./assets/hero.jpg?v=1.1.2" alt="Fuel your results">
+      <img class="psp-hero-img" src="./assets/hero.jpg?v=1.2.0" alt="Fuel your results">
       <button class="psp-btn psp-hero-btn" data-psp="go" data-to="shop">SHOP NOW</button>
     </section>
 
@@ -48,8 +47,6 @@ export async function homeHtml() {
       ${tile('spin', '◎', 'SPIN TO WIN', 'Win prizes')}
       ${tile('offers', '🏷', 'OFFERS', 'Latest deals')}
     </div>
-
-    <div id="psp-wait" class="psp-wait"></div>
 
     ${slush ? `
     <section class="psp-promo" data-psp="item" data-id="${esc(slush.id)}">
@@ -100,11 +97,4 @@ function tile(action, icon, label, sub) {
 
 function findItem(name) {
   return ctx.menu.categories.flatMap(c => c.items).find(i => i.name === name) || null;
-}
-
-/* Called after the home screen is in the DOM — the wait time renders itself
-   and refreshes on its own timer. */
-export function mountWait() {
-  const el = document.getElementById('psp-wait');
-  if (el && ctx.wait) ctx.wait.mount(el);
 }
