@@ -57,3 +57,22 @@ body.staff{ padding-bottom:24px; }
 @media (min-width:768px){
   .st-list{ grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
+
+/* ---------- paid versus owed ----------
+   The single most important thing on this screen is whether to take money.
+   It is a badge at the top of the card, not a line buried in the detail. */
+.st-sect{ font-family:var(--font-head); font-style:italic; font-weight:900;
+  font-size:14px; letter-spacing:.5px; color:var(--text-2);
+  text-transform:uppercase; margin:18px 0 8px; }
+.st-sect:first-child{ margin-top:0; }
+.st-card.unpaid{ border-color:var(--brand); }
+.st-due{
+  display:flex; flex-direction:column; align-items:flex-end; flex:0 0 auto;
+  background:var(--brand); border-radius:8px; padding:5px 9px; line-height:1.1;
+  font-size:9px; font-weight:800; letter-spacing:1px;
+}
+.st-due strong{ font-size:17px; letter-spacing:0; }
+.st-paid{
+  flex:0 0 auto; align-self:flex-start; font-size:10px; font-weight:800; letter-spacing:1px;
+  background:#14532d; color:#bbf7d0; padding:4px 8px; border-radius:6px;
+}

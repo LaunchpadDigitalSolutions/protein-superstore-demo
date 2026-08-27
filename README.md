@@ -15,6 +15,11 @@ Middlesbrough, Stockton). Built by Launchpad Digital Solutions.
 pay, watch the order status, collect. Points accrue on every order and can be
 redeemed against rewards. Installs to the home screen and keeps working offline.
 
+**Two ways to pay.** Pay now by card, or reserve and pay at the counter. A
+reservation is not paid for and might never be collected, so its points are
+awarded when staff mark it collected, not when it is ordered. The staff view
+shows the amount to take as a badge at the top of the card.
+
 **Staff** — on their own phone, not a mounted tablet. Sign in, see what's
 waiting oldest first, what to make and what to pick, tap Ready. That flips the
 customer's screen and fires their alert.
