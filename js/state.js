@@ -72,12 +72,12 @@ export function ago(iso) {
 
 export function slushPhoto(flavour, cls = '') {
   const filter = CONFIG.slushFilters[flavour] || 'none';
-  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.2.1" alt="${esc(flavour || 'Protein slush')}"
+  return `<img class="psp-slush ${cls}" src="./assets/slush-hero.jpg?v=1.3.0" alt="${esc(flavour || 'Protein slush')}"
                style="filter:${filter}" loading="lazy">`;
 }
 
 export function slushPair() {
-  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.2.1"
+  return `<img class="psp-slushpair" src="./assets/slush-pair.jpg?v=1.3.0"
                alt="Protein slush, blue raspberry and cherry" loading="lazy">`;
 }
 
@@ -85,14 +85,18 @@ export function slushPair() {
 export function productImage(item) {
   const url = CONFIG.productImages[item.name];
   if (url) {
-    return `<img class="psp-photo" src="${esc(url)}" alt="${esc(item.name)}" loading="lazy">`;
+    /* If the client's CDN blocks the request or the URL rots, swap in the
+       type tile rather than showing a broken-image icon. */
+    return `<img class="psp-photo" src="${esc(url)}" alt="${esc(item.name)}" loading="lazy"
+      onerror="this.outerHTML=this.dataset.fallback"
+      data-fallback="${esc(typeTile(item.name))}">`;
   }
   return typeTile(item.name);
 }
 
 /* Brand and product name set on black with the house slash. Deliberately
    typographic — it reads as a design choice, not a bad illustration. */
-function typeTile(name) {
+export function typeTile(name) {
   const parts = String(name).split(' ');
   const brand = /^5%/.test(name) ? '5% NUTRITION'
               : /sneak/i.test(name) ? 'SNEAK'

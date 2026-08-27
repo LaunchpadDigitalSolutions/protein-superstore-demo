@@ -61,7 +61,20 @@ input,select,textarea{ font-size:16px; font-family:var(--font-body); }
 .lp-shell-bi{ color:var(--text-2); }
 .lp-shell-bi.on,.lp-shell-ni.on{ color:var(--brand); }
 .lp-shell-bi-label{ font-size:11px; letter-spacing:.5px; text-transform:uppercase; }
-.lp-shell-body{ padding:14px; max-width:900px; margin:0 auto; }
+/* This container is a flex item, and I centred it with `margin:0 auto`.
+   An auto margin on the cross axis switches OFF the default stretch, so
+   instead of matching the screen the element sized itself to its content —
+   and the widest content is the horizontally-scrolling product rail. It came
+   out 387px wide on a 375px phone, at every screen size, which is why the
+   right edge was clipped and pinch-to-zoom did nothing.
+
+   `width:100%` gives it a definite size again; the max-width still centres it
+   on a desktop. `min-width:0` stops the same rail imposing a content-based
+   minimum. */
+.lp-shell-body{
+  padding:14px; width:100%; max-width:900px; margin:0 auto; min-width:0;
+}
+.lp-shell-main{ min-width:0; }
 
 /* ---------- shared type ---------- */
 .psp-h2{
@@ -93,7 +106,16 @@ img{ max-width:100%; }
 /* ---------- module chrome in brand colours ---------- */
 .lp-ly-card,.lp-ly-look{ background:var(--surface); border:1px solid var(--border); }
 .lp-pay-demo{ border-color:var(--brand); }
-.lp-bug-btn{ background:var(--brand); }
+/* The module parks this bottom-right, which on a phone lands squarely on the
+   ACCOUNT tab. Lift it above the nav. */
+/* The module parks this bottom-right, which on a phone lands squarely on the
+   ACCOUNT tab. Lift it clear of the bottom nav. */
+.lp-bug-fab{ bottom:calc(84px + env(safe-area-inset-bottom)) !important; }
+@media (min-width:768px){
+  .lp-bug-fab{ bottom:20px !important; }
+}
+/* The staff view has no bottom nav, so it can sit where the module puts it. */
+body.staff .lp-bug-fab{ bottom:20px !important; }
 
 @media (min-width:768px){
   .lp-shell-body{ padding:24px; }
