@@ -19,11 +19,14 @@
 }
 
 *{ -webkit-tap-highlight-color:transparent; box-sizing:border-box; }
-html{ -webkit-text-size-adjust:100%; }
+/* overflow-x on body alone is not enough — the html element has to hold the
+   line too, or a single wide child widens the document and the page opens
+   zoomed out on a phone. */
+html{ -webkit-text-size-adjust:100%; overflow-x:hidden; max-width:100%; }
 body{
   margin:0; background:var(--bg); color:var(--text);
   font-family:var(--font-body); font-size:16px; line-height:1.45;
-  overflow-x:hidden; overscroll-behavior:none;
+  overflow-x:hidden; overscroll-behavior:none; max-width:100%;
 }
 input,select,textarea{ font-size:16px; font-family:var(--font-body); }
 
