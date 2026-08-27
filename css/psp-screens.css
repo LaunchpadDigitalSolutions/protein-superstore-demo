@@ -17,17 +17,16 @@
 
 /* ---------- hero ---------- */
 .psp-hero{
-  position:relative; border-radius:var(--radius-lg); overflow:hidden; padding:22px 16px;
-  background:
-    radial-gradient(120% 90% at 85% 40%, rgba(228,24,31,.35), transparent 60%),
-    linear-gradient(120deg,#151515 0%,#0a0a0a 60%);
-  border:1px solid var(--border);
+  position:relative; border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
+  border:1px solid var(--border); line-height:0;
 }
-.psp-hero-h{
-  font-family:var(--font-head); font-style:italic; font-weight:900; font-size:34px;
-  line-height:.94; letter-spacing:-1px; text-transform:uppercase; margin:0 0 14px;
+.psp-hero-img{ width:100%; height:auto; display:block; }
+/* The artwork already carries a SHOP NOW button, so the real one sits over it
+   and stays a proper 44px tap target. */
+.psp-hero-btn{
+  position:absolute; left:5.5%; bottom:8%; opacity:0; min-height:var(--tap);
+  min-width:38%; line-height:0;
 }
-.psp-hero-h em{ color:var(--brand); font-style:italic; }
 
 /* ---------- quick tiles ---------- */
 .psp-tiles{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0; }
@@ -68,7 +67,22 @@
   position:relative; text-align:left; cursor:pointer; padding:12px 10px 14px;
   background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); color:var(--text);
 }
-.psp-card-art{ display:grid; place-content:center; min-height:92px; margin-bottom:8px; }
+.psp-card-art{ display:grid; place-content:center; min-height:92px; margin-bottom:8px; overflow:hidden; }
+.psp-slush{ display:block; width:auto; height:104px; object-fit:contain; }
+.psp-slush.lg{ height:280px; }
+.psp-photo{ display:block; width:100%; height:92px; object-fit:contain; }
+.psp-slushpair{ display:block; width:118px; height:auto; border-radius:8px; }
+
+/* Typographic tile — used where the client's CDN has no photo yet. */
+.psp-typetile{
+  display:flex; flex-direction:column; justify-content:center; gap:4px;
+  height:92px; padding:10px; border-radius:8px; text-align:left;
+  background:linear-gradient(110deg,#1c1c1c 0%,#0d0d0d 55%);
+  border-left:3px solid var(--brand);
+}
+.psp-typetile-brand{ font-size:9px; font-weight:800; letter-spacing:1.4px; color:var(--brand); }
+.psp-typetile-name{ font-family:var(--font-head); font-style:italic; font-weight:900;
+  font-size:13px; line-height:1.05; text-transform:uppercase; }
 .psp-card-name{ font-size:13px; font-weight:600; line-height:1.25; min-height:2.5em; }
 .psp-card-price{ font-weight:900; font-size:15px; margin-top:4px; }
 .psp-card-price span{ font-size:10px; color:var(--text-2); font-weight:600; margin-left:4px; }
@@ -87,6 +101,8 @@
 
 /* ---------- product sheet ---------- */
 .psp-sheet-art{ display:grid; place-content:center; padding:6px 0 14px; }
+.psp-sheet-art .psp-photo{ height:200px; }
+.psp-sheet-art .psp-typetile{ height:150px; width:100%; }
 .psp-sheet-desc{ color:var(--text-2); font-size:14px; margin-bottom:16px; }
 .psp-group{ margin-bottom:16px; }
 .psp-group-label{ font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); margin-bottom:8px; }

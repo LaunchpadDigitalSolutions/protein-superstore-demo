@@ -6,7 +6,7 @@
    this screen is a hardcoded number. */
 
 import { CONFIG } from './config.js';
-import { ctx, currentStore, currentUser, money, esc, points, slushCup } from './state.js';
+import { ctx, currentStore, currentUser, money, esc, points, slushPair } from './state.js';
 import { productArt, basketBarHtml } from './shop.js';
 
 export async function homeHtml() {
@@ -37,11 +37,9 @@ export async function homeHtml() {
       <div class="psp-points-pill">${points(balance)}<span>POINTS</span></div>
     </div>
 
-    <section class="psp-hero">
-      <div class="psp-hero-copy">
-        <h1 class="psp-hero-h">FUEL YOUR<br><em>RESULTS</em></h1>
-        <button class="psp-btn" data-psp="go" data-to="shop">SHOP NOW</button>
-      </div>
+    <section class="psp-hero" data-psp="go" data-to="shop">
+      <img class="psp-hero-img" src="./assets/hero.jpg" alt="Fuel your results">
+      <button class="psp-btn psp-hero-btn" data-psp="go" data-to="shop">SHOP NOW</button>
     </section>
 
     <div class="psp-tiles">
@@ -61,9 +59,7 @@ export async function homeHtml() {
         <p>Refreshing. Icy. Packed with protein.</p>
         <span class="psp-btn psp-btn-sm">ORDER NOW</span>
       </div>
-      <div class="psp-promo-art">
-        ${slushCup('Blue Raspberry', 96)}${slushCup('Cherry Burst', 78)}
-      </div>
+      <div class="psp-promo-art">${slushPair()}</div>
     </section>` : ''}
 
     <div class="psp-rowhead">

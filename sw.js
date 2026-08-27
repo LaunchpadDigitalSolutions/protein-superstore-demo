@@ -26,7 +26,7 @@
 
 const CONFIG = {
   /* Bump this on every deploy. It's what triggers the update. */
-  version: 'v1.0.0',
+  version: 'v1.1.0',
   appName: 'protein-superstore',
 
   /* Cached on install — the app must open with these alone. */
@@ -38,7 +38,11 @@ const CONFIG = {
     './core/tokens.css',
     './core/ui.css',
     './icon-192.png',
-    './icon-512.png'
+    './icon-512.png',
+    './assets/logo.jpg',
+    './assets/hero.jpg',
+    './assets/slush-hero.jpg',
+    './assets/slush-pair.jpg'
   ],
 
   /* Network first, cache as a fallback. */

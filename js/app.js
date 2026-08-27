@@ -114,8 +114,23 @@ function buildShell() {
   });
 
   ctx.shell.render();
+  brandTheHeader();
   afterRender(ctx.shell.active);
   app.addEventListener('click', onClick);
+}
+
+/* Swap the shell's text title for the client's logo lockup. */
+function brandTheHeader() {
+  const logo = '<img class="psp-logo" src="./assets/logo.jpg" alt="Protein Superstore">';
+  const side = document.querySelector('.lp-shell-brand');
+  const top = document.querySelector('.lp-shell-top');
+  if (side) side.innerHTML = logo;
+  if (top && !top.querySelector('.psp-logo')) {
+    const el = document.createElement('div');
+    el.className = 'psp-topbrand';
+    el.innerHTML = logo;
+    top.appendChild(el);
+  }
 }
 
 /* Things that have to happen once a section's HTML is in the DOM. */
